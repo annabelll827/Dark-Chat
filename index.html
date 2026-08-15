@@ -13,7 +13,8 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 .top-right { display: grid; grid-template-columns: repeat(2, auto); gap: 12px; align-items: center; justify-items: center; }
 .icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 .icon-btn.active { color: #f1c40f; }
-.middle-section { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; margin-bottom: 25px; }
+/* گواستنەوەی بەشی وێنەگرتن بۆ شوێنە بەتاڵەکەی خوارەوە پێش مێنۆ بار */
+.middle-section { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; padding-bottom: 20px; }
 .capture-container { display: flex; align-items: center; justify-content: center; position: relative; width: 100%; max-width: 320px; }
 .capture-btn { width: 75px; height: 75px; border-radius: 50%; background: transparent; border: 4px solid white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
 .capture-inner { width: 63px; height: 63px; border-radius: 50%; background: white; }
@@ -60,6 +61,7 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 </button>
 </div>
 </div>
+<!-- بەشی وێنەگرتن و میمۆریز کە هاتۆتە خوارەوە -->
 <div class="middle-section">
 <div class="capture-container">
 <div class="memories-box" onclick="alert('Memories section')">
