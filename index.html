@@ -3,27 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Chat - Snap Save</title>
+<title>Dark Chat - Snap Style</title>
 <style>
 body { margin: 0; background: #000; font-family: Tahoma; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-.camera-screen { position: relative; width: 100%; height: 100vh; background: #111; display: flex; justify-content: center; align-items: center; }
-video { width: 100%; height: 100%; object-fit: cover; }
-.snap-controls { position: absolute; bottom: 40px; width: 100%; display: flex; justify-content: space-around; align-items: center; padding: 0 20px; box-sizing: border-box; }
+/* شاشەی سەرەکی کە کامێرا یان وێنەی تێدا دەرەکەوێت */
+.main-screen { position: relative; width: 100%; height: 100vh; background: #111; display: flex; flex-direction: column; justify-content: space-between; }
+video, img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
+/* بەشی سەرەوە (لۆگۆ و دوگمەکان) */
+.top-bar { position: relative; z-index: 10; display: flex; justify-content: space-between; padding: 20px; align-items: center; }
+.app-title { color: white; font-weight: bold; font-size: 18px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+/* بەشی خوارەوە (دوگمەکانی سناپچات و چات) */
+.bottom-bar { position: relative; z-index: 10; width: 100%; display: flex; flex-direction: column; align-items: center; padding-bottom: 30px; box-sizing: border-box; }
+/* دوگمەکانی کامێرا */
+.snap-controls { width: 100%; display: flex; justify-content: space-around; align-items: center; padding: 0 20px; }
 .capture-btn { width: 75px; height: 75px; border-radius: 50%; background: transparent; border: 5px solid white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
 .capture-inner { width: 60px; height: 60px; border-radius: 50%; background: white; }
 .icon-btn { background: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 15px; border-radius: 50%; font-size: 18px; cursor: pointer; }
+/* بەشی نوسین لەسەر وێنە و ناردنی چات */
+.chat-input-box { width: 90%; display: flex; gap: 10px; margin-top: 15px; }
+.chat-input-box input { flex: 1; padding: 12px; border: none; border-radius: 25px; background: rgba(0,0,0,0.6); color: white; font-size: 16px; backdrop-filter: blur(5px); outline: none; text-align: right; }
+.send-btn { background: #007bff; color: white; border: none; padding: 0 20px; border-radius: 25px; font-weight: bold; cursor: pointer; }
+.hidden { display: none !important; }
 </style>
 </head>
 <body>
-<div class="camera-screen">
+<div class="main-screen">
+<!-- کامێرا و وێنەی گیراو -->
 <video id="cameraView" autoplay playsinline></video>
-<div class="snap-controls">
+<img id="photoPreview" class="hidden" alt="وێنەی گیراو">
+<!-- لایەنی سەرەوە -->
+<div class="top-bar">
+<div class="app-title">Dark Chat 👻</div>
 <button class="icon-btn" onclick="switchCamera()">🔄</button>
-<button class="capture-btn" onclick="capturePhoto()"><div class="capture-inner"></div></button>
+</div>
+<!-- لایەنی خوارەوە -->
+<div class="bottom-bar">
+<!-- کۆنترۆڵی کامێرا (کاتی گرتن) -->
+<div class="snap-controls" id="cameraControls">
 <button class="icon-btn" style="visibility: hidden;">⚡</button>
+<button class="capture-btn" onclick="capturePhoto()"><div class="capture-inner"></div></button>
+<button class="icon-btn" style="visibility: hidden;">💬</button>
+</div>
+<!-- کۆنترۆڵی دوای گرتنی وێنە (ناردن یان سڕینەوە) -->
+<div class="chat-input-box hidden" id="previewControls">
+<button class="icon-btn" onclick="retakePhoto()" style="background: #dc3545;">✕</button>
+<input type="text" id="captionInput" placeholder="تێبینیەک بنووسە...">
+<button class="send-btn" onclick="sendSnap()">ناردن</button>
 </div>
 </div>
-<!-- کەناسی شاراوە بۆ دروستکردنی وێنەکە -->
+</div>
 <canvas id="canvas" style="display:none;"></canvas>
 <script>
 let currentFacingMode = 'user';
@@ -47,18 +75,30 @@ startCamera();
 function capturePhoto() {
 const video = document.getElementById('cameraView');
 const canvas = document.getElementById('canvas');
+const photoPreview = document.getElementById('photoPreview');
 canvas.width = video.videoWidth;
 canvas.height = video.videoHeight;
 const ctx = canvas.getContext('2d');
 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-// گۆڕینی وێنەکە بۆ بەستەرێک بۆ دابەزاندن
-const imageURL = canvas.toDataURL('image/jpeg');
-const link = document.createElement('a');
-link.href = imageURL;
-link.download = 'dark-chat-snap.jpg';
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
+photoPreview.src = canvas.toDataURL('image/jpeg');
+photoPreview.classList.remove('hidden');
+video.classList.add('hidden');
+document.getElementById('cameraControls').classList.add('hidden');
+document.getElementById('previewControls').classList.remove('hidden');
+}
+function retakePhoto() {
+const video = document.getElementById('cameraView');
+const photoPreview = document.getElementById('photoPreview');
+photoPreview.classList.add('hidden');
+video.classList.remove('hidden');
+document.getElementById('cameraControls').classList.remove('hidden');
+document.getElementById('previewControls').classList.add('hidden');
+document.getElementById('captionInput').value = "";
+}
+function sendSnap() {
+const caption = document.getElementById('captionInput').value;
+alert("سناپەکە بە سەرکەوتوویی نێردرا! (تێبینی: " + (caption ? caption : "بێ تێبینی") + ")");
+retakePhoto();
 }
 startCamera();
 </script>
