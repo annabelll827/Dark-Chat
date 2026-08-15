@@ -11,6 +11,7 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 .top-bar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
 .top-left, .top-right { display: flex; gap: 20px; align-items: center; }
 .icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+.icon-btn.active { color: #f1c40f; }
 .middle-section { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
 .capture-container { display: flex; align-items: center; justify-content: center; position: relative; width: 100%; }
 .capture-btn { width: 75px; height: 75px; border-radius: 50%; background: transparent; border: 4px solid white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
@@ -41,11 +42,10 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/>
 </svg>
 </button>
-<!-- دوگمەی فڵاش گۆڕدرا بۆ هێمای ئەستێرە و هێڵی تێپەڕیو (Flash Off) -->
-<button class="icon-btn" title="فڵاش">
+<!-- دوگمەی فڵاش کە کاردەکات لەسەر مۆبایل -->
+<button class="icon-btn" id="flashBtn" onclick="toggleFlash()" title="فڵاش">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-<line x1="1" y1="1" x2="23" y2="23"></line>
 </svg>
 </button>
 </div>
@@ -72,14 +72,19 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 <script>
 let currentFacingMode = 'user';
 let stream = null;
+let flashOn = false;
 async function startCamera() {
 if (stream) {
 stream.getTracks().forEach(track => track.stop());
 }
 try {
-const constraints = { video: { facingMode: currentFacingMode } };
+const constraints = {
+video: { facingMode: currentFacingMode }
+};
 stream = await navigator.mediaDevices.getUserMedia(constraints);
 document.getElementById('cameraView').srcObject = stream;
+flashOn = false;
+document.getElementById('flashBtn').classList.remove('active');
 } catch (err) {
 alert("نەتوانرا کامێرا بکرێتەوە.");
 }
@@ -87,6 +92,29 @@ alert("نەتوانرا کامێرا بکرێتەوە.");
 function switchCamera() {
 currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
 startCamera();
+}
+async function toggleFlash() {
+if (!stream) return;
+const track = stream.getVideoTracks()[0];
+const capabilities = track.getCapabilities ? track.getCapabilities() : {};
+if (capabilities.torch) {
+try {
+flashOn = !flashOn;
+await track.applyConstraints({
+advanced: [{ torch: flashOn }]
+});
+const flashBtn = document.getElementById('flashBtn');
+if (flashOn) {
+flashBtn.classList.add('active');
+} else {
+flashBtn.classList.remove('active');
+}
+} catch (err) {
+alert("فڵاش لەسەر ئەم ئامێرە پشتیوانی ناکرێت یان هەڵە ڕوویدا.");
+}
+} else {
+alert("کامێرای ئێستای ئەم ئامێرە فڵاشی نییە یان ڕێگەی پێنەدراوە.");
+}
 }
 function capturePhoto() {
 alert("وێنە گیرا!");
