@@ -13,16 +13,15 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 .top-right { display: grid; grid-template-columns: repeat(2, auto); gap: 12px; align-items: center; justify-items: center; }
 .icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 .icon-btn.active { color: #f1c40f; }
-/* بەشی ناوەڕاست کە هێنرایە خوارەوە بۆ نزیک پاوەری خوارەوە */
-.middle-section { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
-.capture-container { display: flex; align-items: center; justify-content: center; position: relative; width: 100%; }
-.capture-btn { width: 70px; height: 70px; border-radius: 50%; background: transparent; border: 4px solid white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-.capture-inner { width: 58px; height: 58px; border-radius: 50%; background: white; }
-.memories-box { position: absolute; left: 40px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-.memories-icon { width: 42px; height: 42px; border: 2px solid white; border-radius: 10px; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: bold; position: relative; }
+.middle-section { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; margin-bottom: 25px; }
+.capture-container { display: flex; align-items: center; justify-content: center; position: relative; width: 100%; max-width: 320px; }
+.capture-btn { width: 75px; height: 75px; border-radius: 50%; background: transparent; border: 4px solid white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+.capture-inner { width: 63px; height: 63px; border-radius: 50%; background: white; }
+.memories-box { position: absolute; left: 20px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+.memories-icon { width: 45px; height: 45px; border: 2px solid white; border-radius: 10px; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: bold; position: relative; }
 .memories-dot { position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; background: #00a8ff; border-radius: 50%; border: 2px solid #000; }
-.memories-text { font-size: 11px; margin-top: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-.nav-bar { position: relative; z-index: 10; display: flex; justify-content: space-around; align-items: center; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.1); }
+.memories-text { font-size: 11px; margin-top: 3px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+.nav-bar { position: relative; z-index: 10; display: flex; justify-content: space-around; align-items: center; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.1); }
 .nav-item { background: none; border: none; color: #888; cursor: pointer; display: flex; flex-direction: column; align-items: center; position: relative; padding: 5px; }
 .nav-item.active { color: #00a8ff; }
 </style>
@@ -61,7 +60,6 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 </button>
 </div>
 </div>
-<!-- بەشی وێنەگرتن کە ئێستا هێنراوەتە خوارەوە -->
 <div class="middle-section">
 <div class="capture-container">
 <div class="memories-box" onclick="alert('Memories section')">
