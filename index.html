@@ -8,11 +8,9 @@
 body { margin: 0; background: #000; font-family: Tahoma, sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; color: white; }
 .camera-screen { position: relative; width: 100%; height: 100vh; background: #111; display: flex; flex-direction: column; justify-content: space-between; }
 video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
-/* بەشی سەرەوە */
 .top-bar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
 .top-left, .top-right { display: flex; gap: 20px; align-items: center; }
 .icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-/* بەشی ناوەڕاست (دوگمەی گرتن و مێمۆری) */
 .middle-section { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
 .capture-container { display: flex; align-items: center; justify-content: center; position: relative; width: 100%; }
 .capture-btn { width: 75px; height: 75px; border-radius: 50%; background: transparent; border: 4px solid white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
@@ -21,7 +19,6 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 .memories-icon { width: 45px; height: 45px; border: 2px solid white; border-radius: 10px; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; font-size: 18px; position: relative; }
 .memories-dot { position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; background: #00a8ff; border-radius: 50%; border: 2px solid #000; }
 .memories-text { font-size: 11px; margin-top: 4px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-/* بەشی خوارەوە (لیستی مێنۆ) */
 .nav-bar { position: relative; z-index: 10; display: flex; justify-content: space-around; align-items: center; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.1); }
 .nav-item { background: none; border: none; color: #888; font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; position: relative; }
 .nav-item.active { color: #00a8ff; }
@@ -31,7 +28,6 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 <body>
 <div class="camera-screen">
 <video id="cameraView" autoplay playsinline></video>
-<!-- لایەنی سەرەوە -->
 <div class="top-bar">
 <div class="top-left">
 <button class="icon-btn">🔍</button>
@@ -39,11 +35,11 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 <div class="top-right">
 <button class="icon-btn">🔔</button>
 <button class="icon-btn">👤+</button>
-<button class="icon-btn" onclick="switchCamera()">🔄</button>
+<!-- لێرەدا ئایکۆنی گۆڕینی کامێرا گۆڕدرا بۆ هێمای گەڕانەوە/Undo -->
+<button class="icon-btn" onclick="switchCamera()" title="گۆڕینی کامێرا">↩</button>
 <button class="icon-btn">⚡</button>
 </div>
 </div>
-<!-- بەشی ناوەڕاست (مێمۆری و دوگمەی گرتن) -->
 <div class="middle-section">
 <div class="capture-container">
 <div class="memories-box" onclick="alert('بەشی Memories')">
@@ -55,7 +51,6 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 </button>
 </div>
 </div>
-<!-- بەشی مێنۆی خوارەوە -->
 <div class="nav-bar">
 <button class="nav-item">📍</button>
 <button class="nav-item active">💬<div class="nav-dot"></div></button>
