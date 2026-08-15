@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ku" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@ body { margin: 0; background: #000; font-family: Tahoma, sans-serif; height: 100
 .camera-screen { position: relative; width: 100%; height: 100vh; background: #111; display: flex; flex-direction: column; justify-content: space-between; }
 video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
 .top-bar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
-.top-left, .top-right { display: flex; gap: 20px; align-items: center; }
+.top-left, .top-right { display: flex; gap: 15px; align-items: center; }
 .icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 .icon-btn.active { color: #f1c40f; }
 .middle-section { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
@@ -31,19 +31,35 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 <video id="cameraView" autoplay playsinline></video>
 <div class="top-bar">
 <div class="top-left">
-<button class="icon-btn">گەڕان</button>
+<button class="icon-btn" title="Search">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="11" cy="11" r="8"></circle>
+<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+</svg>
+</button>
 </div>
 <div class="top-right">
-<button class="icon-btn">ئاگاداری</button>
-<button class="icon-btn">هاوڕێ</button>
-<button class="icon-btn" onclick="switchCamera()" title="گۆڕینی کامێرا">
+<button class="icon-btn" title="Notifications">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+</svg>
+</button>
+<button class="icon-btn" title="Add Friend">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+<circle cx="8.5" cy="7" r="4"></circle>
+<line x1="20" y1="8" x2="20" y2="14"></line>
+<line x1="17" y1="11" x2="23" y2="11"></line>
+</svg>
+</button>
+<button class="icon-btn" onclick="switchCamera()" title="Switch Camera">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
 <path d="M9 14L4 9l5-5"/>
 <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/>
 </svg>
 </button>
-<!-- دوگمەی فڵاش کە کاردەکات لەسەر مۆبایل -->
-<button class="icon-btn" id="flashBtn" onclick="toggleFlash()" title="فڵاش">
+<button class="icon-btn" id="flashBtn" onclick="toggleFlash()" title="Flash">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
 </svg>
@@ -52,9 +68,9 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 </div>
 <div class="middle-section">
 <div class="capture-container">
-<div class="memories-box" onclick="alert('بەشی مێمۆری')">
-<div class="memories-icon">وێنە<div class="memories-dot"></div></div>
-<span class="memories-text">مێمۆری</span>
+<div class="memories-box" onclick="alert('Memories section')">
+<div class="memories-icon">Pic<div class="memories-dot"></div></div>
+<span class="memories-text">Memories</span>
 </div>
 <button class="capture-btn" onclick="capturePhoto()">
 <div class="capture-inner"></div>
@@ -62,11 +78,11 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 </div>
 </div>
 <div class="nav-bar">
-<button class="nav-item">نەخشە</button>
-<button class="nav-item active">چات<div class="nav-dot"></div></button>
-<button class="nav-item">کامێرا</button>
-<button class="nav-item">گرووپ</button>
-<button class="nav-item">سپۆتلایت</button>
+<button class="nav-item">Map</button>
+<button class="nav-item active">Chat<div class="nav-dot"></div></button>
+<button class="nav-item">Camera</button>
+<button class="nav-item">Groups</button>
+<button class="nav-item">Spotlight</button>
 </div>
 </div>
 <script>
@@ -86,7 +102,7 @@ document.getElementById('cameraView').srcObject = stream;
 flashOn = false;
 document.getElementById('flashBtn').classList.remove('active');
 } catch (err) {
-alert("نەتوانرا کامێرا بکرێتەوە.");
+alert("Unable to access the camera.");
 }
 }
 function switchCamera() {
@@ -110,14 +126,14 @@ flashBtn.classList.add('active');
 flashBtn.classList.remove('active');
 }
 } catch (err) {
-alert("فڵاش لەسەر ئەم ئامێرە پشتیوانی ناکرێت یان هەڵە ڕوویدا.");
+alert("Flash is not supported on this device.");
 }
 } else {
-alert("کامێرای ئێستای ئەم ئامێرە فڵاشی نییە یان ڕێگەی پێنەدراوە.");
+alert("The current camera does not support flash.");
 }
 }
 function capturePhoto() {
-alert("وێنە گیرا!");
+alert("Photo captured!");
 }
 startCamera();
 </script>
