@@ -8,8 +8,10 @@
 body { margin: 0; background: #000; font-family: Tahoma, sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; color: white; }
 .camera-screen { position: relative; width: 100%; height: 100vh; background: #111; display: flex; flex-direction: column; justify-content: space-between; }
 video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
-.top-bar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
-.top-left, .top-right { display: flex; gap: 15px; align-items: center; }
+.top-bar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: flex-start; padding: 15px 20px; }
+.top-left { display: flex; gap: 15px; align-items: center; }
+/* ڕێکخستنی دوگمەکان بۆ ئەوەی ببنە دوو ڕیز وەک وێنەکە */
+.top-right { display: grid; grid-template-columns: repeat(2, auto); gap: 12px; align-items: center; justify-items: center; }
 .icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 .icon-btn.active { color: #f1c40f; }
 .middle-section { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
@@ -38,7 +40,9 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 </svg>
 </button>
 </div>
+<!-- شێوازی دوو ڕیزی دوگمەکان (Grid Layout) -->
 <div class="top-right">
+<!-- خانەی ١: زیادکردنی هاوڕێ -->
 <button class="icon-btn" title="Add Friend">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -47,17 +51,17 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 <line x1="17" y1="11" x2="23" y2="11"></line>
 </svg>
 </button>
-<!-- فڵاش لێرەدا لەسەرەوە دانراوە -->
-<button class="icon-btn" id="flashBtn" onclick="toggleFlash()" title="Flash">
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-</svg>
-</button>
-<!-- دوگمەی گۆڕینی کامێرا کەوتە ژێر فڵاشەوە -->
+<!-- خانەی ٢: گۆڕینی کامێرا -->
 <button class="icon-btn" onclick="switchCamera()" title="Switch Camera">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-<path d="M9 14L4 9l5-5"/>
-<path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/>
+<path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.65-5.65"/>
+</svg>
+</button>
+<!-- خانەی ٤: فڵاش (لە ژێر گۆڕینی کامێرادا) -->
+<button class="icon-btn" id="flashBtn" onclick="toggleFlash()" title="Flash" style="grid-column: 2;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+<line x1="12" y1="2" x2="12" y2="12"></line>
 </svg>
 </button>
 </div>
