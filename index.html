@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Chat - Snap Style</title>
+<title>Dark Chat - Snap Save</title>
 <style>
 body { margin: 0; background: #000; font-family: Tahoma; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 .camera-screen { position: relative; width: 100%; height: 100vh; background: #111; display: flex; justify-content: center; align-items: center; }
@@ -18,11 +18,13 @@ video { width: 100%; height: 100%; object-fit: cover; }
 <div class="camera-screen">
 <video id="cameraView" autoplay playsinline></video>
 <div class="snap-controls">
-<button class="icon-btn" onclick="toggleFlash()">⚡</button>
-<button class="capture-btn" onclick="capturePhoto()"><div class="capture-inner"></div></button>
 <button class="icon-btn" onclick="switchCamera()">🔄</button>
+<button class="capture-btn" onclick="capturePhoto()"><div class="capture-inner"></div></button>
+<button class="icon-btn" style="visibility: hidden;">⚡</button>
 </div>
 </div>
+<!-- کەناسی شاراوە بۆ دروستکردنی وێنەکە -->
+<canvas id="canvas" style="display:none;"></canvas>
 <script>
 let currentFacingMode = 'user';
 let stream = null;
@@ -43,7 +45,20 @@ currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
 startCamera();
 }
 function capturePhoto() {
-alert("وێنە گیرا!");
+const video = document.getElementById('cameraView');
+const canvas = document.getElementById('canvas');
+canvas.width = video.videoWidth;
+canvas.height = video.videoHeight;
+const ctx = canvas.getContext('2d');
+ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+// گۆڕینی وێنەکە بۆ بەستەرێک بۆ دابەزاندن
+const imageURL = canvas.toDataURL('image/jpeg');
+const link = document.createElement('a');
+link.href = imageURL;
+link.download = 'dark-chat-snap.jpg';
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
 }
 startCamera();
 </script>
