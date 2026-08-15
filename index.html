@@ -16,11 +16,11 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 .capture-btn { width: 75px; height: 75px; border-radius: 50%; background: transparent; border: 4px solid white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
 .capture-inner { width: 63px; height: 63px; border-radius: 50%; background: white; }
 .memories-box { position: absolute; left: 40px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-.memories-icon { width: 45px; height: 45px; border: 2px solid white; border-radius: 10px; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; font-size: 18px; position: relative; }
+.memories-icon { width: 45px; height: 45px; border: 2px solid white; border-radius: 10px; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; position: relative; }
 .memories-dot { position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; background: #00a8ff; border-radius: 50%; border: 2px solid #000; }
 .memories-text { font-size: 11px; margin-top: 4px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 .nav-bar { position: relative; z-index: 10; display: flex; justify-content: space-around; align-items: center; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.1); }
-.nav-item { background: none; border: none; color: #888; font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; position: relative; }
+.nav-item { background: none; border: none; color: #888; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; position: relative; }
 .nav-item.active { color: #00a8ff; }
 .nav-dot { position: absolute; top: -2px; right: 2px; width: 8px; height: 8px; background: #00a8ff; border-radius: 50%; }
 </style>
@@ -30,21 +30,25 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 <video id="cameraView" autoplay playsinline></video>
 <div class="top-bar">
 <div class="top-left">
-<button class="icon-btn">🔍</button>
+<button class="icon-btn">گەڕان</button>
 </div>
 <div class="top-right">
-<button class="icon-btn">🔔</button>
-<button class="icon-btn">👤+</button>
-<!-- لێرەدا ئایکۆنی گۆڕینی کامێرا گۆڕدرا بۆ هێمای گەڕانەوە/Undo -->
-<button class="icon-btn" onclick="switchCamera()" title="گۆڕینی کامێرا">↩</button>
-<button class="icon-btn">⚡</button>
+<button class="icon-btn">ئاگاداری</button>
+<button class="icon-btn">هاوڕێ</button>
+<button class="icon-btn" onclick="switchCamera()" title="گۆڕینی کامێرا">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M9 14L4 9l5-5"/>
+<path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/>
+</svg>
+</button>
+<button class="icon-btn">رۆشنایی</button>
 </div>
 </div>
 <div class="middle-section">
 <div class="capture-container">
-<div class="memories-box" onclick="alert('بەشی Memories')">
-<div class="memories-icon">📁<div class="memories-dot"></div></div>
-<span class="memories-text">Memories</span>
+<div class="memories-box" onclick="alert('بەشی مێمۆری')">
+<div class="memories-icon">وێنە<div class="memories-dot"></div></div>
+<span class="memories-text">مێمۆری</span>
 </div>
 <button class="capture-btn" onclick="capturePhoto()">
 <div class="capture-inner"></div>
@@ -52,11 +56,11 @@ video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0
 </div>
 </div>
 <div class="nav-bar">
-<button class="nav-item">📍</button>
-<button class="nav-item active">💬<div class="nav-dot"></div></button>
-<button class="nav-item">📷</button>
-<button class="nav-item">👥</button>
-<button class="nav-item">▶️</button>
+<button class="nav-item">نەخشە</button>
+<button class="nav-item active">چات<div class="nav-dot"></div></button>
+<button class="nav-item">کامێرا</button>
+<button class="nav-item">گرووپ</button>
+<button class="nav-item">سپۆتلایت</button>
 </div>
 </div>
 <script>
