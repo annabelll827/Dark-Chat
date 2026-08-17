@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Website</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0f0f0f;
+            font-family: Arial, sans-serif;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #333;
+            z-index: 100;
+        }
+
+        .logo { font-size: 18px; font-weight: bold; }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 28px;
+            height: 20px;
+        }
+
+        .menu-btn span { display: block; width: 100%; height: 3px; background: white; border-radius: 3px; }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -350px; /* Changed to left */
+            width: 320px;
+            height: 100%;
+            background: #161616;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            transition: 0.3s ease;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            padding: 70px 15px 20px 15px;
+            box-sizing: border-box;
+            border-right: 1px solid #333; /* Changed to right */
+            overflow-y: auto;
+        }
+
+        .sidebar.active { left: 0; }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 20px; /* Changed to left */
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Sections */
+        .menu-section {
+            background: #222;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            margin-bottom: 15px;
+        }
+
+        .menu-section h3 { margin: 0 0 8px 0; font-size: 13px; color: #aaa; }
+
+        /* Link Section */
+        .link-box { display: flex; gap: 8px; }
+        .link-input {
+            flex: 1;
+            background: #111;
+            border: 1px solid #444;
+            color: white;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 11px;
+            outline: none;
+        }
+        .copy-btn {
+            background: #00a8ff;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        /* Extractor Section */
+        .extractor-container textarea {
+            width: 100%; height: 80px; padding: 8px; border-radius: 5px;
+            border: 1px solid #444; background: #111; color: white;
+            margin-bottom: 8px; box-sizing: border-box; font-size: 11px; resize: none;
+        }
+        .extractor-container button {
+            width: 100%; padding: 8px; background-color: #007bff;
+            color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;
+        }
+        .results-box {
+            margin-top: 10px; background: #111; padding: 8px; border-radius: 5px;
+            border: 1px solid #444; min-height: 40px; max-height: 100px;
+            overflow-y: auto; white-space: pre-wrap; text-align: left;
+            font-size: 11px; color: #ddd;
+        }
+
+        .main-content {
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; text-align: center; color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">My Dashboard</div>
+        <button class="menu-btn" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" onclick="toggleMenu()">&times;</button>
+        
+        <div class="menu-section">
+            <h3>Share Link</h3>
+            <div class="link-box">
+                <input type="text" class="link-input" id="shareLink" value="https://pqr.me/z9fpMym4" readonly>
+                <button class="copy-btn" onclick="copyLink()">Copy</button>
+            </div>
+        </div>
+
+        <div class="menu-section extractor-container">
+            <h3>Email Extractor</h3>
+            <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+            <button onclick="extractEmails()">Extract Emails</button>
+            <div style="margin-top: 8px; font-size: 12px;">Found: <span id="emailCount" style="color: #2ecc71;">0</span></div>
+            <div id="results" class="results-box">Results will appear here...</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h2>Click on the menu icon above</h2>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        function copyLink() {
+            const linkInput = document.getElementById('shareLink');
+            linkInput.select();
+            navigator.clipboard.writeText(linkInput.value);
+            const btn = document.querySelector('.copy-btn');
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+        }
+
+        function extractEmails() {
+            const text = document.getElementById('inputText').value;
+            const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+            const foundEmails = text.match(emailRegex);
+            const resultsDiv = document.getElementById('results');
+            const countSpan = document.getElementById('emailCount');
+
+            if (foundEmails) {
+                const uniqueEmails = [...new Set(foundEmails)];
+                resultsDiv.innerText = uniqueEmails.join('\n');
+                countSpan.innerText = uniqueEmails.length;
+            } else {
+                resultsDiv.innerText = "No emails found.";
+                countSpan.innerText = "0";
+            }
+        }
+    </script>
+</body>
+</html>
