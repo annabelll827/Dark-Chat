@@ -14,14 +14,13 @@
             transform: scaleX(-1);
         }
         
-        /* شێوازی ئەو وێنەیەی کە دەتەوێت لە کاتی کردنەوەی سایتەکە دەركەوێت */
         .welcome-image-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 5; /* لەسەر کامێراکە دەبێت پێش ئەوەی کار بکات */
+            z-index: 5;
             background: #000;
             display: flex;
             justify-content: center;
@@ -29,8 +28,8 @@
         }
 
         .welcome-image-container img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
@@ -59,9 +58,9 @@
 </head>
 <body>
     <div class="camera-screen">
-        <!-- وێنەکە لێرەدا دانراوە بۆ ئەوەی لە کاتی کردنەوەدا دەربکەوێت -->
+        <!-- لێرەدا لینکی وێنەکەت داندراوە -->
         <div class="welcome-image-container" id="welcomeImage">
-            <img src="https://i.ibb.co/1fkSymR6/image.jpg" alt="Welcome">
+            <img src="https://kommodo.ai/i/QMDOYnXhHPSrapsqdM4c" alt="Welcome">
         </div>
 
         <video id="cameraView" autoplay playsinline></video>
