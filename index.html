@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وەرگێڕی کۆد بۆ وێبسایت - Live Code Editor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: #1e293b;
+            padding: 15px 20px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            font-size: 1.2rem;
+            color: #38bdf8;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #334155;
+        }
+        .pane-header {
+            background-color: #1e293b;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            border-bottom: 1px solid #334155;
+        }
+        textarea {
+            flex: 1;
+            background-color: #090d16;
+            color: #38bdf8;
+            padding: 15px;
+            border: none;
+            resize: none;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            outline: none;
+            direction: ltr;
+            text-align: left;
+        }
+        iframe {
+            flex: 1;
+            border: none;
+            background-color: #ffffff;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>کۆدەکە لێرە دابنە بۆ ئەوەی ڕاستەوخۆ وەک وێبسایت بیبینیت</h1>
+    </header>
+
+    <div class="container">
+        <!-- بەشی نووسینی کۆد -->
+        <div class="pane">
+            <div class="pane-header">کۆدی HTML / CSS / JS لێرە بنووسە</div>
+            <textarea id="code-input" placeholder="<!-- کۆدەکانت لێرە دابنە -->&#10;<h1>سڵاو جیهان!</h1>">&#10;&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10;&lt;head&gt;&#10;    &lt;style&gt;&#10;        body { background: #f0f0f0; text-align: center; padding-top: 50px; font-family: sans-serif; }&#10;        h1 { color: #2563eb; }&#10;    &lt;/style&gt;&#10;&lt;/head&gt;&#10;&lt;body&gt;&#10;    &lt;h1&gt;وێبسایتەکەت سەرکەوتووە!&lt;/h1&gt;&#10;&lt;/body&gt;&#10;&lt;/html&gt;</textarea>
+        </div>
+
+        <!-- بەشی پیشاندانی وێبسایتەکە -->
+        <div class="pane">
+            <div class="pane-header">پەنجەرەی بینینی وێبسایت</div>
+            <iframe id="preview-window"></iframe>
+        </div>
+    </div>
+
+    <script>
+        const codeInput = document.getElementById('code-input');
+        const previewWindow = document.getElementById('preview-window');
+
+        function updatePreview() {
+            const code = codeInput.value;
+            const iframeDoc = previewWindow.contentDocument || previewWindow.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(code);
+            iframeDoc.close();
+        }
+
+        // کاتێک کۆدەکە دەگۆڕدرێت ڕاستەوخۆ نوێ دەبێتەوە
+        codeInput.addEventListener('input', updatePreview);
+
+        // لە سەرەتای کردنەوەشدا کار بکات
+        window.onload = updatePreview;
+    </script>
+
+</body>
+</html>
