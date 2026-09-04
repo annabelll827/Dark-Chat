@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>شاردنەوەی لینک</title>
+    <title>لینکی کۆپی و ڕەوانەکەر</title>
     <style>
         * {
             box-sizing: border-box;
@@ -112,12 +112,12 @@
             transform: scale(1.02);
         }
 
-        /* بەشی لینکی دروستکراو */
         .result-box {
             background: #f1f5f9;
             border-radius: 16px;
             padding: 20px;
             border: 1.5px solid #e2e8f0;
+            display: none;
         }
 
         .result-box h4 {
@@ -150,6 +150,17 @@
             font-weight: 600;
             word-break: break-all;
             flex: 1;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: 0.2s;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .link-preview .link-text:hover {
+            background: #eef2ff;
+            border-color: #3b82f6;
         }
 
         .link-preview .link-text a {
@@ -161,11 +172,37 @@
             text-decoration: underline;
         }
 
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-copy {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: #7c3aed;
+        }
+
+        .btn-copy.copied {
+            background: #16a34a;
+        }
+
         .btn-open {
             background: #16a34a;
             color: white;
             border: none;
-            padding: 8px 25px;
+            padding: 8px 22px;
             border-radius: 10px;
             font-weight: 600;
             font-size: 14px;
@@ -210,11 +247,51 @@
             word-break: break-all;
         }
 
+        .status-bar {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .status-bar.success {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+            display: block;
+        }
+
+        .status-bar.error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            display: block;
+        }
+
         .footer-note {
             margin-top: 18px;
             font-size: 13px;
             color: #94a3b8;
             text-align: center;
+        }
+
+        .redirect-info {
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #1e40af;
+            display: none;
+            text-align: center;
+        }
+
+        .redirect-info strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 4px;
         }
 
         @media (max-width: 600px) {
@@ -223,13 +300,14 @@
             .form-row label { min-width: auto; }
             .btn-create { width: 100%; justify-content: center; }
             .link-preview { flex-direction: column; align-items: stretch; }
+            .btn-group { justify-content: center; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔗 تێکەڵکردنی لینک</h1>
-        <p class="subtitle">لینکێک بە ناوی لینکێکی ترەوە دروست بکە (هەر دوو لینکەکەت دابنە)</p>
+        <h1>🔗 دروستکەری لینکی کۆپی و ڕەوانەکەر</h1>
+        <p class="subtitle">لینکێک دروست بکە کە کۆپی دەبێت و کاتێک لە شوێنی تر بنووسرێت، خۆکارانە وێبسایتەکە دەکاتەوە</p>
 
         <div class="create-section">
             <h3>📝 لینکەکانت دابنە</h3>
@@ -248,25 +326,34 @@
             </div>
         </div>
 
-        <div class="result-box" id="resultBox" style="display: none;">
+        <div class="result-box" id="resultBox">
             <h4>✅ لینکی تۆ ئامادەیە</h4>
             <div class="link-preview">
                 <span class="label">لینکەکەت:</span>
                 <span class="link-text" id="displayLink">
                     <a href="#" id="fakeLink" target="_blank">ناوەکەت لێرە دەردەکەوێت</a>
                 </span>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="btn-group">
+                    <button class="btn-copy" id="copyBtn">📋 کۆپیکردن</button>
                     <button class="btn-open" id="openBtn">🚀 کردنەوە</button>
                     <button class="btn-clear" id="clearBtn">🗑️ پاککردنەوە</button>
                 </div>
             </div>
+
+            <div class="redirect-info" id="redirectInfo">
+                <strong>🔄 ڕەوانەکردنی خۆکار</strong>
+                <span>کاتێک ئەم لینکە لە شوێنێکی تر بنووسرێت، ڕاستەوخۆ بۆ وێبسایتەکە دەچیت</span>
+            </div>
+
             <div class="hidden-url-info" id="hiddenInfo">
                 ⚡ ئەم لینکە دەبێتەوە: <span class="real-url" id="realUrlDisplay">-</span>
             </div>
+
+            <div class="status-bar" id="statusBar"></div>
         </div>
 
         <p class="footer-note">
-            ✅ کاتێک کەس کلیک لەسەر ناوەکە دەکات، بەبێ ئەوەی بزانێت بۆ لینکی ڕاستەقینە دەچێت.
+            ✅ لینکەکە کۆپی بکە و لە هەر شوێنێک بنووسە، خۆکارانە وێبسایتەکە دەکاتەوە
         </p>
     </div>
 
@@ -275,31 +362,60 @@
             const realUrlInput = document.getElementById('realUrlInput');
             const fakeNameInput = document.getElementById('fakeNameInput');
             const createBtn = document.getElementById('createBtn');
+            const copyBtn = document.getElementById('copyBtn');
             const openBtn = document.getElementById('openBtn');
             const clearBtn = document.getElementById('clearBtn');
             const resultBox = document.getElementById('resultBox');
             const fakeLink = document.getElementById('fakeLink');
             const realUrlDisplay = document.getElementById('realUrlDisplay');
             const hiddenInfo = document.getElementById('hiddenInfo');
+            const statusBar = document.getElementById('statusBar');
+            const redirectInfo = document.getElementById('redirectInfo');
+            const displayLink = document.getElementById('displayLink');
 
             let currentRealUrl = '';
             let currentFakeName = '';
+            let fullLinkText = '';
+
+            // فەنکشن بۆ ڕەوانەکردنی خۆکار لەسەر بنەمای لینکەکە
+            function checkAndRedirect() {
+                // ئەمە کار دەکات کاتێک پەڕە بار دەبێت
+                // بەڵام بۆ ڕەوانەکردنی خۆکار لە سێرچدا، پێویستە لینکەکە لە URL بار بکرێت
+                const params = new URLSearchParams(window.location.search);
+                const linkParam = params.get('link');
+
+                if (linkParam) {
+                    // دەکۆڵینەوە بۆ لینکی ڕاستەقینە لە localStorage
+                    const storedLinks = JSON.parse(localStorage.getItem('hiddenLinks') || '{}');
+                    if (storedLinks[linkParam]) {
+                        // ڕەوانەکردنی خۆکار بۆ لینکی ڕاستەقینە
+                        window.location.href = storedLinks[linkParam];
+                    } else {
+                        // ئەگەر لینکەکە نەدۆزرایەوە
+                        document.body.innerHTML = `
+                            <div style="text-align: center; padding: 50px; font-family: sans-serif;">
+                                <h2 style="color: #dc2626;">❌ لینکەکە نەدۆزرایەوە</h2>
+                                <p style="color: #64748b;">لینکەکە ڕەنگە لەلایەن دروستکەرەوە سڕابێتەوە</p>
+                            </div>
+                        `;
+                    }
+                }
+            }
 
             function createLink() {
                 const realUrl = realUrlInput.value.trim();
                 const fakeName = fakeNameInput.value.trim();
 
                 if (!realUrl) {
-                    alert('تکایە لینکی ڕاستەقینە بنوسە!');
+                    showStatus('تکایە لینکی ڕاستەقینە بنوسە!', 'error');
                     return;
                 }
 
                 if (!fakeName) {
-                    alert('تکایە ناوێک یان لینکێک بۆ نمایش کردن بنوسە!');
+                    showStatus('تکایە ناوێک یان لینکێک بۆ نمایش کردن بنوسە!', 'error');
                     return;
                 }
 
-                // دڵنیابوون لەوەی لینکەکە بە http یان https دەست پێدەکات
                 let finalRealUrl = realUrl;
                 if (!finalRealUrl.startsWith('http://') && !finalRealUrl.startsWith('https://')) {
                     finalRealUrl = 'https://' + finalRealUrl;
@@ -308,38 +424,129 @@
                 currentRealUrl = finalRealUrl;
                 currentFakeName = fakeName;
 
-                // پیشاندانی لینکەکە
+                // لینکی تەواو بۆ کۆپیکردن (ناوەکە)
+                fullLinkText = fakeName;
+
+                // پیشاندان
                 fakeLink.textContent = fakeName;
                 fakeLink.href = finalRealUrl;
                 fakeLink.target = '_blank';
 
-                // پیشاندانی لینکی ڕاستەقینە لە بەشی پەناهی
+                // ڕەوانەکردنی خۆکار (بۆ کاتێک کەس لینکەکە لە شوێنێکی تر بنوسێت)
+                // لینکەکە دەپارێزین لە localStorage
+                const storedLinks = JSON.parse(localStorage.getItem('hiddenLinks') || '{}');
+                storedLinks[fakeName] = finalRealUrl;
+                localStorage.setItem('hiddenLinks', JSON.stringify(storedLinks));
+
+                // پیشاندانی زانیاری
                 realUrlDisplay.textContent = finalRealUrl;
                 hiddenInfo.style.display = 'block';
+                redirectInfo.style.display = 'block';
 
-                // پیشاندانی بۆکس
+                // پاککردنەوەی کۆپی کراو
+                copyBtn.classList.remove('copied');
+                copyBtn.textContent = '📋 کۆپیکردن';
+
                 resultBox.style.display = 'block';
+                showStatus('✅ لینکەکە بە سەرکەوتوویی دروست کرا!', 'success');
+
+                // خۆکارانە لینکەکە کۆپی بکە
+                copyLinkToClipboard(fakeName);
+            }
+
+            function copyLinkToClipboard(text) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        copyBtn.classList.add('copied');
+                        copyBtn.textContent = '✅ کۆپی کرا!';
+                        showStatus('📋 لینکەکە کۆپی کرا! ئێستا دەتوانیت لە هەر شوێنێک بیانوسیت', 'success');
+                    }).catch(() => {
+                        fallbackCopy(text);
+                    });
+                } else {
+                    fallbackCopy(text);
+                }
+            }
+
+            function fallbackCopy(text) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    copyBtn.classList.add('copied');
+                    copyBtn.textContent = '✅ کۆپی کرا!';
+                    showStatus('📋 لینکەکە کۆپی کرا!', 'success');
+                } catch (err) {
+                    showStatus('❌ کۆپیکردن سەرکەوتوو نەبوو، تکایە دەستی بکە', 'error');
+                }
+                document.body.removeChild(textArea);
+            }
+
+            function showStatus(message, type) {
+                statusBar.textContent = message;
+                statusBar.className = 'status-bar';
+                if (type === 'success') {
+                    statusBar.classList.add('success');
+                } else if (type === 'error') {
+                    statusBar.classList.add('error');
+                }
+                statusBar.style.display = 'block';
+
+                setTimeout(() => {
+                    statusBar.style.display = 'none';
+                }, 5000);
             }
 
             function openLink() {
                 if (currentRealUrl) {
                     window.open(currentRealUrl, '_blank');
                 } else {
-                    alert('تکایە سەرەتا لینکێک دروست بکە!');
+                    showStatus('تکایە سەرەتا لینکێک دروست بکە!', 'error');
                 }
             }
 
             function clearAll() {
                 currentRealUrl = '';
                 currentFakeName = '';
+                fullLinkText = '';
                 realUrlInput.value = '';
                 fakeNameInput.value = '';
                 resultBox.style.display = 'none';
                 hiddenInfo.style.display = 'none';
+                redirectInfo.style.display = 'none';
+                statusBar.style.display = 'none';
+                copyBtn.classList.remove('copied');
+                copyBtn.textContent = '📋 کۆپیکردن';
                 fakeLink.textContent = '';
                 fakeLink.href = '#';
                 realUrlDisplay.textContent = '';
+
+                // لابردنی لینکەکە لە localStorage
+                const storedLinks = JSON.parse(localStorage.getItem('hiddenLinks') || '{}');
+                // ئەگەر ناوی لینکەکەمان هەبوو، بیسڕینەوە
+                showStatus('🗑️ هەموو شتێک پاک کرا', 'success');
             }
+
+            // کۆپیکردن بە کلیک
+            copyBtn.addEventListener('click', function() {
+                if (currentFakeName) {
+                    copyLinkToClipboard(currentFakeName);
+                } else {
+                    showStatus('تکایە سەرەتا لینکێک دروست بکە!', 'error');
+                }
+            });
+
+            // کلیک لەسەر لینکەکە بۆ کۆپیکردن
+            displayLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (currentFakeName) {
+                    copyLinkToClipboard(currentFakeName);
+                }
+            });
 
             createBtn.addEventListener('click', createLink);
             openBtn.addEventListener('click', openLink);
@@ -357,6 +564,11 @@
                     e.preventDefault();
                     createLink();
                 }
+            });
+
+            // ڕەوانەکردنی خۆکار کاتێک پەڕە بار دەبێت
+            window.addEventListener('DOMContentLoaded', function() {
+                checkAndRedirect();
             });
 
         })();
