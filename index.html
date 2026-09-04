@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>لینک دروستکەر و بینەر</title>
+    <title>دروستکەری لینک</title>
     <style>
         * {
             box-sizing: border-box;
@@ -25,7 +25,7 @@
             background: white;
             border-radius: 24px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
-            max-width: 1100px;
+            max-width: 900px;
             width: 100%;
             padding: 35px 30px;
         }
@@ -44,7 +44,6 @@
             font-size: 15px;
         }
 
-        /* بەشی دروستکردنی لینک */
         .create-section {
             background: #f8fafc;
             border-radius: 16px;
@@ -122,7 +121,6 @@
             transform: scale(0.97);
         }
 
-        /* بەشی لینکی چالاک */
         .active-link-box {
             background: #eef2ff;
             border-radius: 12px;
@@ -185,7 +183,6 @@
             background: #cbd5e1;
         }
 
-        /* بەشی پیشاندانی وێبسایت (ئایفڕەیم) */
         .iframe-wrapper {
             margin-top: 20px;
             border-radius: 16px;
@@ -231,7 +228,6 @@
             text-align: center;
         }
 
-        /* وەڵامدانەوە */
         @media (max-width: 650px) {
             .container { padding: 20px 15px; }
             .create-row { flex-direction: column; align-items: stretch; }
@@ -243,24 +239,22 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔗 دروستکەری لینک و بینەری وێبسایت</h1>
-        <p class="subtitle">لینکی خۆت دابنە، ناوی لینکەکە بنوسە، کلیکی دروستکردن بکە، پاشان وێبسایتەکە ببینە</p>
+        <h1>🔗 دروستکەری لینک</h1>
+        <p class="subtitle">لینکی ڕاستەقینە دابنە، ناوی دڵخوازی بۆ دابنە، پاشان وێبسایتەکە ببینە</p>
 
-        <!-- بەشی دروستکردن -->
         <div class="create-section">
             <h3>📝 لینکی نوێ دروست بکە</h3>
             <div class="create-row">
                 <label>لینک (URL):</label>
-                <input type="text" id="urlInput" placeholder="https://example.com" value="https://example.com" />
+                <input type="text" id="urlInput" placeholder="https://example.com" />
                 
                 <label>ناو (تایتڵ):</label>
-                <input type="text" id="titleInput" placeholder="ناوی لینکەکە..." value="ماڵپەڕی نموونە" />
+                <input type="text" id="titleInput" placeholder="ناوی دڵخوازی بۆ لینکەکە..." />
                 
                 <button class="btn-create" id="createBtn">✨ دروستکردن</button>
             </div>
         </div>
 
-        <!-- بەشی لینکی چالاک -->
         <div class="active-link-box" id="activeLinkBox">
             <strong>🔗 لینکی چالاک:</strong>
             <span class="link-url" id="activeLinkDisplay">هێشتا لینکێک دروست نەکراوە</span>
@@ -268,25 +262,22 @@
             <button class="btn-clear" id="clearBtn">🗑️ پاککردنەوە</button>
         </div>
 
-        <!-- بەشی پیشاندانی وێبسایت -->
         <div class="iframe-wrapper" id="iframeWrapper">
-            <!-- ئەمە دەبێتە شوێنی ئایفڕەیم یان پلەیس هۆڵدەر -->
             <div class="iframe-placeholder" id="placeholder">
                 <div class="icon">🌐</div>
-                <p>لینکێک دروست بکە بۆ بینینی وێبسایتەکە لەم بۆشاییدا</p>
-                <p style="font-size:14px; color:#b0b8c4;">ئەتوانیت هەر لینکێک (HTTP/HTTPS) بەکاربهێنیت</p>
+                <p>لینکێک دروست بکە بۆ بینینی وێبسایتەکە</p>
+                <p style="font-size:14px; color:#b0b8c4;">لینکی ڕاستەقینە دابنە و ناوێکی خۆش بۆ دابنە</p>
             </div>
             <iframe id="previewIframe" style="display:none;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
         </div>
 
         <p class="footer-note">
-            ✅ لینکەکەت دروست بکە، پاشان کلیکی «کردنەوە» بکە بۆ بینینی وێبسایتەکە لە هەمان پەڕەدا.
+            ✅ تەنها ناوی لینکەکە پیشان دەدرێت، بەڵام کاتی کردنەوەدا بۆ لینکی ڕاستەقینە دەچیت.
         </p>
     </div>
 
     <script>
         (function() {
-            // گرتنی ئێلێمێنتەکان
             const urlInput = document.getElementById('urlInput');
             const titleInput = document.getElementById('titleInput');
             const createBtn = document.getElementById('createBtn');
@@ -296,43 +287,38 @@
             const placeholder = document.getElementById('placeholder');
             const previewIframe = document.getElementById('previewIframe');
 
-            // شوێنی هەڵگرتنی لینکی دروستکراو
             let currentLink = {
                 url: '',
                 title: ''
             };
 
-            // فەنکشن بۆ پیشاندانی لینک لە بۆکسی چالاک
             function updateActiveLinkDisplay() {
-                if (currentLink.url && currentLink.title) {
-                    activeLinkDisplay.textContent = `${currentLink.title} — ${currentLink.url}`;
+                if (currentLink.title) {
+                    activeLinkDisplay.textContent = currentLink.title;
                 } else if (currentLink.url) {
+                    // ئەگەر ناو نەبێت، تەنها لینکەکە پیشان بدە
                     activeLinkDisplay.textContent = currentLink.url;
                 } else {
                     activeLinkDisplay.textContent = 'هێشتا لینکێک دروست نەکراوە';
                 }
             }
 
-            // فەنکشن بۆ کردنەوەی لینک لە ئایفڕەیمدا
             function openLinkInIframe(url) {
                 if (!url || url.trim() === '') {
                     alert('تکایە سەرەتا لینکێک دروست بکە!');
                     return;
                 }
 
-                // دڵنیابوون لەوەی کە لینکەکە بە http یان https دەست پێدەکات
                 let finalUrl = url.trim();
                 if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
                     finalUrl = 'https://' + finalUrl;
                 }
 
-                // پیشاندانی ئایفڕەیم و شاردنەوەی پلەیس هۆڵدەر
                 placeholder.style.display = 'none';
                 previewIframe.style.display = 'block';
                 previewIframe.src = finalUrl;
             }
 
-            // فەنکشنی دروستکردنی لینک
             function createLink() {
                 const url = urlInput.value.trim();
                 const title = titleInput.value.trim();
@@ -342,21 +328,14 @@
                     return;
                 }
 
-                // هەڵگرتنی لینکەکە
+                // ئەگەر ناو نەنوسرابێت، لینکەکە خۆی دەبێتە ناو
                 currentLink.url = url;
-                currentLink.title = title || url; // ئەگەر ناو نەبێت، خودی لینکەکە دەبێتە ناو
+                currentLink.title = title || url;
 
-                // نوێکردنەوەی پیشاندان
                 updateActiveLinkDisplay();
-
-                // بە شێوەی ئۆتۆماتیکی لینکەکە لە ئایفڕەیمدا بکەرەوە
                 openLinkInIframe(url);
-
-                // پیامی سەرکەوتن
-                // (دەتوانیت لە کۆنسۆل یان بە ئاگادارکردنەوە)
             }
 
-            // فەنکشن بۆ کردنەوەی لینکی چالاک
             function openActiveLink() {
                 if (currentLink.url) {
                     openLinkInIframe(currentLink.url);
@@ -365,31 +344,23 @@
                 }
             }
 
-            // فەنکشن بۆ پاککردنەوەی هەموو شتێک
             function clearAll() {
-                // پاککردنەوەی زانیارییەکان
                 currentLink.url = '';
                 currentLink.title = '';
                 updateActiveLinkDisplay();
 
-                // گەڕانەوە بۆ پلەیس هۆڵدەر
                 previewIframe.style.display = 'none';
                 previewIframe.src = '';
                 placeholder.style.display = 'flex';
 
-                // خاڵیکردنەوەی فۆرمەکان (بەڵام نرخی پێشتر دەهێڵینەوە یان بەتاڵ دەکەین)
-                // ئەتوانیت بەتاڵیان بکەیت یان نەکەیت
-                // بۆ ئاسانی، تەنها بەتاڵی ناکەین تا خەڵک بتوانێت دووبارە بەکاربهێنێت
+                urlInput.value = '';
+                titleInput.value = '';
             }
 
-            // ڕووداوەکان
             createBtn.addEventListener('click', createLink);
-
             openBtn.addEventListener('click', openActiveLink);
-
             clearBtn.addEventListener('click', clearAll);
 
-            // کەسپتەر: کەوتنە سەر کلیلی Enter لە فۆرمەکاندا
             urlInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -401,13 +372,6 @@
                     e.preventDefault();
                     createLink();
                 }
-            });
-
-            // کاتێک پەڕە بار دەبێت، لینکی نموونەیی دروست بکە
-            window.addEventListener('DOMContentLoaded', function() {
-                // بە شێوەی ئۆتۆماتیکی لینکی یەکەم دروست بکە
-                // بۆ ئەوەی بەکارهێنەر یەکسەر ببینێت کە کار دەکات
-                createLink();
             });
 
         })();
